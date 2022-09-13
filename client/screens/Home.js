@@ -1,14 +1,12 @@
-
 import { View, Text } from "react-native";
 import React from "react";
 
-const auth = () => {
+const Home = () => {
   return (
     <View>
-      <Text>auth</Text>
+      <Text>Home</Text>
     </View>
-
   );
 };
 
-export default auth;
+export default Home;
