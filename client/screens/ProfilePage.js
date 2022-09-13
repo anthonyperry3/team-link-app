@@ -1,13 +1,25 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import styles from './ProfilePageStyles'
+import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import styles from "./ProfilePageStyles";
 
-const ProfilePage = () => {
+const ProfilePage = (props) => {
+  const signOut = () => {
+    props.userAuth.signOut();
+  };
+
+  useEffect(() => {
+    if (props.userId === "") props.navigation.navigate("LoginPage");
+  }, [props.userId]);
+
   return (
     <View>
       <Text>profilePage</Text>
+
+      <TouchableOpacity onPress={signOut}>
+        <Text>Sign Out</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 export default ProfilePage;
