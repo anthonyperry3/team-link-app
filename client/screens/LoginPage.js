@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Icon, Input } from "react-native-elements";
 import styles from "./LoginPageStyles";
@@ -13,19 +13,21 @@ const LoginPage = (props) => {
   // const [confirmPassword, setConfirmPassword] = useState("");
 
   const register = () => {
-    createUserWithEmailAndPassword(
-      props.getAuth,
-      email,
-      password,
-      confirmPassword
-    );
+    createUserWithEmailAndPassword(props.userAuth, email, password);
   };
 
   const login = () => {
-    signInWithEmailAndPassword(props.getAuth, email, password);
+    signInWithEmailAndPassword(props.userAuth, email, password);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (props.userId !== "") {
+      props.navigation.navigate("Home");
+    } else {
+      setEmail("");
+      setPassword("");
+    }
+  }, [props.userId]);
 
   return (
     <View>
@@ -35,6 +37,8 @@ const LoginPage = (props) => {
           <Text>Email</Text>
           <Input
             placeholder="Email/Username"
+            value={email}
+            onChangeText={setEmail}
             leftIcon={
               <Icon
                 name="envelope"
@@ -49,14 +53,16 @@ const LoginPage = (props) => {
           <Text>Password</Text>
           <Input
             placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
             leftIcon={
               <Icon name="lock" type="font-awesome" size={24} color="#444" />
             }
           />
         </View>
-        <Button onPress={() => register(email, password)}>
+        <TouchableOpacity onPress={register}>
           <Text>Register</Text>
-        </Button>
+        </TouchableOpacity>
       </View>
     </View>
   );
