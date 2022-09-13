@@ -8,7 +8,7 @@ import ProfilePage from "./screens/ProfilePage";
 
 import firebase from "./Firebase/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -16,19 +16,34 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function HomeTabs() {
+  const [userId, setUserId] = useState("");
 
+  const userAuth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(userAuth, (user) => {
+      if (user !== null) {
+        setUserId(user.uid);
+      } else {
+        setUserId("");
+      }
+    });
+  }, []);
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Profile" component={Profile} />
-      <Tab.Screen name="Finder" component={Finder} />
-      <Tab.Screen name="Matches" component={Matches} />
+      <Tab.Screen name="ProfilePage">
+        {(props) => (
+          <ProfilePage {...props} userAuth={userAuth} userId={userId} />
+        )}
+      </Tab.Screen>
+      {/* <Tab.Screen name="Finder" component={Finder} /> */}
+      {/* <Tab.Screen name="Matches" component={Matches} /> */}
     </Tab.Navigator>
   );
 }
 
 function App() {
-
-  const [userId, setUserId] = useState("")
+  const [userId, setUserId] = useState("");
 
   const userAuth = getAuth();
 
@@ -44,15 +59,18 @@ function App() {
 
   return (
     <NavigationContainer>
-    <Stack.Navigator initialRouteName = "LoginPage" screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Landing" component={LandingPage} />
-      <Stack.Screen
-          name="LoginPage"
-        >
-          {(props) => <LoginPage {...props} userAuth={userAuth} userId={userId} />}
+      <Stack.Navigator
+        initialRouteName="LoginPage"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Landing" component={LandingPage} />
+        <Stack.Screen name="LoginPage">
+          {(props) => (
+            <LoginPage {...props} userAuth={userAuth} userId={userId} />
+          )}
         </Stack.Screen>
-      <Stack.Screen name="Home" component={HomeTabs} />
-    </Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeTabs} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

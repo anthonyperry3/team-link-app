@@ -63,6 +63,9 @@ const LoginPage = (props) => {
         <TouchableOpacity onPress={register}>
           <Text>Register</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={login}>
+          <Text>Login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
