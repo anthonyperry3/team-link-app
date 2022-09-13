@@ -32,6 +32,7 @@ const LoginPage = (props) => {
       <Text>Register</Text>
       <Input placeholder='Email/Username'leftIcon={<Icon name='envelope' type='font-awesome' size={24} color='#444'/>}/>
       <Input placeholder='Password'leftIcon={<Icon name='lock' type='font-awesome' size={24} color='#444'/>}/>
+      
 
       </View>
     </View>
