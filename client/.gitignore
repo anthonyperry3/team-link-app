@@ -1,5 +1,9 @@
 node_modules/
+<<<<<<< HEAD
 firebase/
+=======
+Firebase/
+>>>>>>> 899bdc328d67fa77a3b0942194f51456093c7400
 .expo/
 dist/
 npm-debug.*
