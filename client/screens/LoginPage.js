@@ -22,7 +22,8 @@ const LoginPage = (props) => {
 
   useEffect(() => {
     if (props.userId !== "") {
-      props.navigation.navigate("Home");
+      console.log(props.userId);
+      props.navigation.navigate("ProfilePage");
     } else {
       setEmail("");
       setPassword("");
