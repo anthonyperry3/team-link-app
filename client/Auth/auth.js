@@ -1,3 +1,16 @@
+import { View, Text } from "react-native";
+import React from "react";
+
+const auth = () => {
+  return (
+    <View>
+      <Text>auth</Text>
+    </View>
+  );
+};
+
+export default auth;
+
 // import React, { useEffect, useState } from "react";
 // import { StyleSheet, Text, Button, View, TextInput } from "react-native";
 // import {
