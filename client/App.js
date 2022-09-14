@@ -51,18 +51,21 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="LoginPage">
-        <Stack.Screen
-          name="Landing"
+      <Tab.Navigator initialRouteName="LandingPage">
+        <Tab.Screen
+          name="LandingPage"
           options={{
             tabBarStyle: { display: "none" },
+            headerShown: false,
           }}
-          component={LandingPage}
-        />
+        >
+          {(props) => <LandingPage {...props} />}
+        </Tab.Screen>
         <Tab.Screen
           name="LoginPage"
           options={{
             tabBarStyle: { display: "none" },
+            headerShown: false,
           }}
         >
           {(props) => (
