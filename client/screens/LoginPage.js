@@ -9,7 +9,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 const LoginPage = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [toggleRegister, setToggleRegister] = useState(false);
+  const [toggleRegister, setToggleRegister] = useState(true);
   // const [confirmPassword, setConfirmPassword] = useState("");
 
   const register = () => {
@@ -31,43 +31,33 @@ const LoginPage = (props) => {
   }, [props.userId]);
 
   return (
-    <View>
-      <View>
+    <View style={styles.container}>
+      {toggleRegister ? (
         <View>
-          <Text>Register</Text>
-          <Text>Email</Text>
-          <Input
-            placeholder="Email/Username"
-            value={email}
-            onChangeText={setEmail}
-            leftIcon={
-              <Icon
-                name="envelope"
-                type="font-awesome"
-                size={24}
-                color="#444"
-              />
-            }
-          />
+          <Text style={styles.registerHeader}>Create Account</Text>
+          <View>
+            <Text style={styles.inputTitles}>Enter Email</Text>
+            <Input value={email} onChangeText={setEmail} />
+          </View>
+          <View>
+            <Text style={styles.inputTitles}>Create Password</Text>
+            <Input value={password} onChangeText={setPassword} />
+          </View>
+          <TouchableOpacity onPress={register} style={styles.actionButton}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.toggleText}>Or Create A New Account</Text>
+          </TouchableOpacity>
         </View>
+      ) : (
         <View>
-          <Text>Password</Text>
-          <Input
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            leftIcon={
-              <Icon name="lock" type="font-awesome" size={24} color="#444" />
-            }
-          />
-        </View>
-        <TouchableOpacity onPress={register}>
-          <Text>Register</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={login}>
           <Text>Login</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={login} style={styles.actionButton}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
