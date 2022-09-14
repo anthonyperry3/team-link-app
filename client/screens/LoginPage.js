@@ -47,14 +47,35 @@ const LoginPage = (props) => {
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={styles.toggleText}>Or Create A New Account</Text>
+            <Text
+              style={styles.toggleText}
+              onPress={() => setToggleRegister(!toggleRegister)}
+            >
+              Already Have An Account? Sign In
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View>
-          <Text>Login</Text>
+          <Text style={styles.registerHeader}>Welcome Back!</Text>
+          <View>
+            <Text style={styles.inputTitles}>Email</Text>
+            <Input value={email} onChangeText={setEmail} />
+          </View>
+          <View>
+            <Text style={styles.inputTitles}>Password</Text>
+            <Input value={password} onChangeText={setPassword} />
+          </View>
           <TouchableOpacity onPress={login} style={styles.actionButton}>
             <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text
+              style={styles.toggleText}
+              onPress={() => setToggleRegister(!toggleRegister)}
+            >
+              Or Create A New Account
+            </Text>
           </TouchableOpacity>
         </View>
       )}

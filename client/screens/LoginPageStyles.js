@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   inputTitles: {
+    marginTop: 40,
     fontSize: 26,
   },
   actionButton: {
