@@ -51,7 +51,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="LandingPage">
+      <Tab.Navigator initialRouteName="LoginPage">
         <Tab.Screen
           name="LandingPage"
           options={{
@@ -104,5 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    
   },
 });
