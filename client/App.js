@@ -56,6 +56,7 @@ function App() {
           name="LandingPage"
           options={{
             tabBarStyle: { display: "none" },
+            headerShown: false
           }}
           component={LandingPage}
         />
@@ -63,6 +64,7 @@ function App() {
           name="LoginPage"
           options={{
             tabBarStyle: { display: "none" },
+            headerShown: false
           }}
         >
           {(props) => (
