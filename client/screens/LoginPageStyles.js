@@ -8,7 +8,9 @@ const styles = StyleSheet.create({
   },
   registerHeader: {
     fontSize: 32,
+    fontWeight: "bold",
   },
+  // subText:{}
   inputTitles: {
     marginTop: 40,
     fontSize: 26,

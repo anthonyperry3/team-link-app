@@ -56,7 +56,7 @@ function App() {
           name="LandingPage"
           options={{
             tabBarStyle: { display: "none" },
-            headerShown: false
+            headerShown: false,
           }}
           component={LandingPage}
         />
@@ -64,7 +64,7 @@ function App() {
           name="LoginPage"
           options={{
             tabBarStyle: { display: "none" },
-            headerShown: false
+            headerShown: false,
           }}
         >
           {(props) => (
@@ -103,6 +103,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    
   },
 });
