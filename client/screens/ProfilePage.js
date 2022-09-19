@@ -13,7 +13,7 @@ const ProfilePage = (props) => {
 
   return (
     <View>
-      <Text>profilePage</Text>
+      <Text>Profile Page</Text>
 
       <TouchableOpacity onPress={signOut}>
         <Text>Sign Out</Text>

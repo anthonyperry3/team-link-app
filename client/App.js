@@ -58,9 +58,8 @@ function App() {
             tabBarStyle: { display: "none" },
             headerShown: false,
           }}
-        >
-          {(props) => <LandingPage {...props} />}
-        </Tab.Screen>
+          component={LandingPage}
+        />
         <Tab.Screen
           name="LoginPage"
           options={{
@@ -104,6 +103,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    
   },
 });
