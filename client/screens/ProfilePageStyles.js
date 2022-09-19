@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#000",
     alignSelf: "center",
-    marginTop: 60,
+    marginTop: 40,
     marginBottom: 20,
   },
   topUserInfoName: {
@@ -36,19 +36,32 @@ const styles = StyleSheet.create({
   aboutTitle: {
     fontSize: 21,
     color: "#EB5757",
-    marginBottom: 30,
+    marginBottom: 20,
   },
   inputTitles: {
     fontSize: 14,
     color: "#898989",
+    marginBottom: 10,
+  },
+  inputInfo: {
+    fontSize: 14,
+    marginBottom: 15,
+  },
+  inputContainers: {
+    borderBottomWidth: 1,
+    borderColor: "#E0DCDC",
+    marginTop: 5,
+    marginBottom: 5,
   },
   boxOne: {
     // borderColor: "#000",
     // borderWidth: 2,
+    marginBottom: 50,
   },
   boxTwo: {
     // borderColor: "#000",
     // borderWidth: 2,
+    // top: -50,
   },
 });
 

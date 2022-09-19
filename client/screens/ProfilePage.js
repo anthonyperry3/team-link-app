@@ -30,36 +30,36 @@ const ProfilePage = (props) => {
       </View>
       <View style={styles.boxTwo}>
         <Text style={styles.aboutTitle}>About</Text>
-        <View>
+        <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Full Name</Text>
           <TextInput
             value={name}
             onChangeText={setName}
-            style={styles.inputTitles}
+            style={styles.inputInfo}
           />
         </View>
-        <View>
+        <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Username</Text>
           <TextInput
             value={username}
             onChangeText={setUsername}
-            style={styles.inputTitles}
+            style={styles.inputInfo}
           />
         </View>
-        <View>
+        <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Location</Text>
           <TextInput
             value={location}
             onChangeText={setLocation}
-            style={styles.inputTitles}
+            style={styles.inputInfo}
           />
         </View>
-        <View>
+        <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Bio</Text>
           <TextInput
             value={bio}
             onChangeText={setBio}
-            style={styles.inputTitles}
+            style={styles.inputInfo}
           />
         </View>
       </View>
