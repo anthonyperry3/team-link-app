@@ -51,7 +51,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="LoginPage">
+      <Tab.Navigator initialRouteName="ProfilePage" style={styles.container}>
         <Tab.Screen
           name="LandingPage"
           options={{
@@ -71,7 +71,12 @@ function App() {
             <LoginPage {...props} userAuth={userAuth} userId={userId} />
           )}
         </Tab.Screen>
-        <Tab.Screen name="ProfilePage">
+        <Tab.Screen
+          name="ProfilePage"
+          options={{
+            headerShown: false,
+          }}
+        >
           {(props) => (
             <ProfilePage {...props} userAuth={userAuth} userId={userId} />
           )}
