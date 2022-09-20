@@ -1,29 +1,45 @@
-import { View, Text, TouchableOpacity, TextInput, Image } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Image, ScrollView} from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
+// import { userAuth } from "firebase";
+
+// const currentUser = userAuth()
+
 
 const ProfilePage = (props) => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
+  const [photoURL, setPhotoURL] = useState("https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg")
 
   const signOut = () => {
     props.userAuth.signOut();
   };
+
+  const currentUser = () => {
+    props.userAuth.currentUser();
+  };
+
+  useEffect(() => {
+    if(currentUser && currentUser.photoURL){
+      setPhotoURL(currentUser.photoURL)
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     if (props.userId === "") props.navigation.navigate("LoginPage");
   }, [props.userId]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.boxOne}>
         <View>
           <Text style={styles.pageTitle}>Profile</Text>
         </View>
         <View style={styles.topUserInfo}>
-          <Image style={styles.topUserInfoImage} />
+          {/* <Image style={styles.topUserInfoImage} /> */}
+          <img src={photoURL} alt="avatar"/>
           <Text style={styles.topUserInfoName}>BOB</Text>
           <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
         </View>
@@ -69,7 +85,7 @@ const ProfilePage = (props) => {
           <Text>Sign Out</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

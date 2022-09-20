@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     // margin: 30,
     padding: 30,
     backgroundColor: "#fff",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
   },
   pageTitle: {
     fontSize: 36,
