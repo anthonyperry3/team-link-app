@@ -35,6 +35,7 @@ const LoginPage = (props) => {
       {toggleRegister ? (
         <View>
           <Text style={styles.registerHeader}>Create Account</Text>
+          <Text style={styles.subText}>Enter Your Email & Password</Text>
           <View>
             <Text style={styles.inputTitles}>Enter Email</Text>
             <Input value={email} onChangeText={setEmail} />

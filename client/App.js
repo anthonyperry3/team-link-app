@@ -51,16 +51,15 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="LoginPage">
+      <Tab.Navigator initialRouteName="ProfilePage" style={styles.container}>
         <Tab.Screen
           name="LandingPage"
           options={{
             tabBarStyle: { display: "none" },
             headerShown: false,
           }}
-        >
-          {(props) => <LandingPage {...props} />}
-        </Tab.Screen>
+          component={LandingPage}
+        />
         <Tab.Screen
           name="LoginPage"
           options={{
@@ -72,7 +71,12 @@ function App() {
             <LoginPage {...props} userAuth={userAuth} userId={userId} />
           )}
         </Tab.Screen>
-        <Tab.Screen name="ProfilePage">
+        <Tab.Screen
+          name="ProfilePage"
+          options={{
+            headerShown: false,
+          }}
+        >
           {(props) => (
             <ProfilePage {...props} userAuth={userAuth} userId={userId} />
           )}
@@ -104,6 +108,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    
   },
 });

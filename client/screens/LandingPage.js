@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import styles from "./LandingPageStyles";
+import Union from "../assets/loginImages/Union.png";
 
 const LandingPage = (props) => {
   return (
@@ -15,6 +16,7 @@ const LandingPage = (props) => {
       >
         <Text style={styles.buttonText}>JOIN NOW</Text>
       </TouchableOpacity>
+      <Image source={Union} style={styles.circlesImage}></Image>
     </View>
   );
 };
