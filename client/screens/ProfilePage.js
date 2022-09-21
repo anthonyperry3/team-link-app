@@ -1,25 +1,27 @@
 import { View, Text, TouchableOpacity, TextInput, Image, ScrollView} from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
-// import { userAuth } from "firebase";
-
-// const currentUser = userAuth()
-
+import { upload, useAuth} from "../Firebase/firebase";
 
 const ProfilePage = (props) => {
+  const currentUser = useAuth()
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
-  const [photoURL, setPhotoURL] = useState("https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg")
+  const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [photoURL, setPhotoURL] = useState("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png")
 
   const signOut = () => {
     props.userAuth.signOut();
   };
 
-  const currentUser = () => {
-    props.userAuth.currentUser();
-  };
+  // const currentUser = () => {
+  //   props.userAuth.currentUser();
+  // };
+
+  
 
   useEffect(() => {
     if(currentUser && currentUser.photoURL){
@@ -31,6 +33,16 @@ const ProfilePage = (props) => {
     if (props.userId === "") props.navigation.navigate("LoginPage");
   }, [props.userId]);
 
+  function handleChange(e) {
+    if(e.target.files[0]) {
+      setPhoto(e.target.files[0])
+    }
+  }
+
+  function handleClick() {
+    upload(photo, currentUser, setLoading)
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.boxOne}>
@@ -39,6 +51,8 @@ const ProfilePage = (props) => {
         </View>
         <View style={styles.topUserInfo}>
           {/* <Image style={styles.topUserInfoImage} /> */}
+          <input type="file" onChange={handleChange}/>
+          <button disabled={loading || !photo} onClick={handleClick}>Upload</button>
           <img src={photoURL} alt="avatar"/>
           <Text style={styles.topUserInfoName}>BOB</Text>
           <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
