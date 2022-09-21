@@ -2,6 +2,15 @@ import { View, Text, TouchableOpacity, TextInput, Image, ScrollView} from "react
 import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
 import { upload, useAuth} from "../Firebase/firebase";
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  onValue,
+  update,
+  remove,
+} from "firebase/database";
 
 const ProfilePage = (props) => {
   const currentUser = useAuth()
@@ -12,6 +21,41 @@ const ProfilePage = (props) => {
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
   const [photoURL, setPhotoURL] = useState("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png")
+
+  const [data, setData] = useState({});
+
+  const [toggleEdit, setToggleEdit] = useState(false);
+  const db = getDatabase();
+
+  const userRef = ref(db, "users/" + props.userId);
+  const newUserRef = push(userRef);
+
+  useEffect(() => {
+    return onValue(userRef, (snapshot) => {
+      if (snapshot.val() !== null) {
+        const data = snapshot.val();
+        //console.log(data);
+        let result = Object.keys(data).map((key) => {
+          return { username: data[key].username, id: key }; //{ task: data[key].task, id: key };
+        });
+        // console.log(data);
+        setData(result);
+      } else {
+        set(newUserRef, { username: "", bio: "" });
+        setData({});
+      }
+    });
+  }, []);
+  const editUsername = (newUsername) => {
+    //console.log(userRef);
+    update(userRef, { username: newUsername });
+    setToggleEdit(!toggleEdit);
+  };
+
+  const editBio = (newBio) => {
+    update(userRef, { bio: newBio });
+    setToggleEdit(!toggleEdit);
+  };
 
   const signOut = () => {
     props.userAuth.signOut();
@@ -55,34 +99,36 @@ const ProfilePage = (props) => {
       </View>
       <View style={styles.boxTwo}>
         <Text style={styles.aboutTitle}>About</Text>
-        <View style={styles.inputContainers}>
+        {/* <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Full Name</Text>
           <TextInput
             value={name}
             onChangeText={setName}
             style={styles.inputInfo}
           />
-        </View>
+        </View> */}
         <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Username</Text>
           <TextInput
             value={username}
+            onBlur={() => editUsername(username)}
             onChangeText={setUsername}
             style={styles.inputInfo}
           />
         </View>
-        <View style={styles.inputContainers}>
+        {/* <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Location</Text>
           <TextInput
             value={location}
             onChangeText={setLocation}
             style={styles.inputInfo}
           />
-        </View>
+        </View> */}
         <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Bio</Text>
           <TextInput
             value={bio}
+            onBlur={() => editBio(bio)}
             onChangeText={setBio}
             style={styles.inputInfo}
           />
