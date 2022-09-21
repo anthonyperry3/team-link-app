@@ -17,11 +17,6 @@ const ProfilePage = (props) => {
     props.userAuth.signOut();
   };
 
-  // const currentUser = () => {
-  //   props.userAuth.currentUser();
-  // };
-
-  
 
   useEffect(() => {
     if(currentUser && currentUser.photoURL){
