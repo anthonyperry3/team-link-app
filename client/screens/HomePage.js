@@ -1,4 +1,10 @@
-import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React from "react";
 import { tailwind, useTailwind } from "tailwind-rn";
 import Swiper from "react-native-deck-swiper";
@@ -10,6 +16,7 @@ const dummyData = [
     bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
     photoUrl:
       "https://media.istockphoto.com/vectors/gamer-esport-mascot-logo-design-vector-id1182383458?k=20&m=1182383458&s=612x612&w=0&h=Bz-KCJM-s292ES7f6PCOHxUK7-Dm34F-O67s9wfF02A=",
+    id: 1,
   },
   {
     username: "Matt",
@@ -17,13 +24,16 @@ const dummyData = [
     bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
     photoUrl:
       "https://thumbs.dreamstime.com/z/gamers-mascot-logo-design-vector-modern-illustration-concept-style-badge-emblem-tshirt-printing-gamer-illustration-165721239.jpg",
+    id: 2,
   },
+
   {
     username: "Colton",
     location: "Dallas, TX",
     bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
     photoUrl:
       "https://img.freepik.com/premium-vector/dark-gamer-cloak-mascot-esport-logo-design_139366-592.jpg?w=2000",
+    id: 3,
   },
 ];
 
@@ -42,9 +52,18 @@ const Home = () => {
         <Swiper
           containerStyle={{ backgroundColor: " transparent" }}
           cards={dummyData}
+          stackSize={5}
+          cardIndex={0}
+          animateCardOpacity
           renderCard={(card) => (
-            <View style={tw("bg-white h-3/4 rounded-xl")}>
-              <Text>{card.username}</Text>
+            <View
+              key={card.id}
+              style={tw("relative bg-white h-3/4 rounded-xl")}
+            >
+              <Image
+                style={tw("absolute top-0 h-full w-full rounded-xl")}
+                source={{ uri: card.photoUrl }}
+              />
             </View>
           )}
         />

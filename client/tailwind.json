@@ -4,6 +4,16 @@
 			"position": "absolute"
 		}
 	},
+	"relative": {
+		"style": {
+			"position": "relative"
+		}
+	},
+	"top-0": {
+		"style": {
+			"top": 0
+		}
+	},
 	"-mt-6": {
 		"style": {
 			"marginTop": -24
@@ -39,9 +49,19 @@
 			"height": 40
 		}
 	},
+	"h-full": {
+		"style": {
+			"height": "100%"
+		}
+	},
 	"w-10": {
 		"style": {
 			"width": 40
+		}
+	},
+	"w-full": {
+		"style": {
+			"width": "100%"
 		}
 	},
 	"flex-1": {
