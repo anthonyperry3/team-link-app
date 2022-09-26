@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import LandingPage from "./screens/LandingPage";
 import LoginPage from "./screens/LoginPage";
 import ProfilePage from "./screens/ProfilePage";
-import Home from "./screens/Home";
+import HomePage from "./screens/HomePage";
 import firebase from "./Firebase/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { TailwindProvider } from "tailwind-rn";
+import utilities from "./tailwind.json";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,41 +52,52 @@ function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName="ProfilePage" style={styles.container}>
-        <Tab.Screen
-          name="LandingPage"
-          options={{
-            tabBarStyle: { display: "none" },
-            headerShown: false,
-          }}
-          component={LandingPage}
-        />
-        <Tab.Screen
-          name="LoginPage"
-          options={{
-            tabBarStyle: { display: "none" },
-            headerShown: false,
-          }}
-        >
-          {(props) => (
-            <LoginPage {...props} userAuth={userAuth} userId={userId} />
-          )}
-        </Tab.Screen>
-        <Tab.Screen
-          name="ProfilePage"
-          options={{
-            headerShown: false,
-          }}
-        >
-          {(props) => (
-            <ProfilePage {...props} userAuth={userAuth} userId={userId} />
-          )}
-        </Tab.Screen>
-        {/* <Tab.Screen name="ProfilePage" component={ProfilePage} /> */}
-        {/* <Tab.Screen name="Matches" component={Matches} /> */}
-      </Tab.Navigator>
-      {/* <Stack.Navigator
+    <TailwindProvider utilities={utilities}>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="HomePage" style={styles.container}>
+          <Tab.Screen
+            name="LandingPage"
+            options={{
+              tabBarStyle: { display: "none" },
+              headerShown: false,
+            }}
+            component={LandingPage}
+          />
+          <Tab.Screen
+            name="LoginPage"
+            options={{
+              tabBarStyle: { display: "none" },
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <LoginPage {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="ProfilePage"
+            options={{
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <ProfilePage {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="HomePage"
+            options={{
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <HomePage {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+          {/* <Tab.Screen name="ProfilePage" component={ProfilePage} /> */}
+          {/* <Tab.Screen name="Matches" component={Matches} /> */}
+        </Tab.Navigator>
+        {/* <Stack.Navigator
         initialRouteName="LoginPage"
         screenOptions={{ headerShown: false }}
       >
@@ -95,8 +108,9 @@ function App() {
           )}
         </Stack.Screen>
         <Stack.Screen name="Home" component={HomeTabs} /> */}
-      {/* </Stack.Navigator> */}
-    </NavigationContainer>
+        {/* </Stack.Navigator> */}
+      </NavigationContainer>
+    </TailwindProvider>
   );
 }
 
@@ -105,7 +119,7 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "red",
     alignItems: "center",
     justifyContent: "center",
   },
