@@ -9,6 +9,7 @@ import {
 import React from "react";
 
 import { tailwind, useTailwind } from "tailwind-rn";
+import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
 
 const dummyData = [
@@ -95,7 +96,7 @@ const Home = () => {
               <View
                 style={[
                   tw(
-                    "absolute bottom-0 bg-white w-full h-20 justify-between items-stretch flex-row px-6 py-2 rounded-b-xl"
+                    "absolute bottom-0 bg-white w-full h-20 justify-between items-center flex-row px-6 py-2 rounded-b-xl"
                   ),
                   styles.cardShadow,
                 ]}
@@ -109,6 +110,14 @@ const Home = () => {
             </View>
           )}
         />
+      </View>
+      <View>
+        <TouchableOpacity>
+          <Entypo name="cross" size={26} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Entypo name="check" size={26} />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
