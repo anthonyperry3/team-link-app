@@ -111,12 +111,20 @@ const Home = () => {
           )}
         />
       </View>
-      <View>
-        <TouchableOpacity>
-          <Entypo name="cross" size={26} />
+      <View style={tw("flex flex-row justify-evenly mb-12")}>
+        <TouchableOpacity
+          style={tw(
+            "items-center justify-center rounded-full w-16 h-16 bg-red-200"
+          )}
+        >
+          <Entypo name="cross" size={26} color="red" />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Entypo name="check" size={26} />
+        <TouchableOpacity
+          style={tw(
+            "items-center justify-center rounded-full w-16 h-16 bg-green-200"
+          )}
+        >
+          <Entypo name="check" size={26} color="green" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
