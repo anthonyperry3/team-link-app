@@ -1,7 +1,14 @@
-import { View, Text, TouchableOpacity, TextInput, Image, ScrollView} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  ScrollView,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
-import { upload, useAuth} from "../Firebase/firebase";
+import { upload, useAuth } from "../Firebase/firebase";
 import {
   getDatabase,
   ref,
@@ -13,14 +20,16 @@ import {
 } from "firebase/database";
 
 const ProfilePage = (props) => {
-  const currentUser = useAuth()
+  const currentUser = useAuth();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [photoURL, setPhotoURL] = useState("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png")
+  const [photoURL, setPhotoURL] = useState(
+    "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
+  );
 
   const [data, setData] = useState({});
 
@@ -61,10 +70,9 @@ const ProfilePage = (props) => {
     props.userAuth.signOut();
   };
 
-
   useEffect(() => {
-    if(currentUser && currentUser.photoURL){
-      setPhotoURL(currentUser.photoURL)
+    if (currentUser && currentUser.photoURL) {
+      setPhotoURL(currentUser.photoURL);
     }
   }, [currentUser]);
 
@@ -73,13 +81,13 @@ const ProfilePage = (props) => {
   }, [props.userId]);
 
   function handleChange(e) {
-    if(e.target.files[0]) {
-      setPhoto(e.target.files[0])
+    if (e.target.files[0]) {
+      setPhoto(e.target.files[0]);
     }
   }
 
   function handleClick() {
-    upload(photo, currentUser, setLoading)
+    upload(photo, currentUser, setLoading);
   }
 
   return (
@@ -90,9 +98,11 @@ const ProfilePage = (props) => {
         </View>
         <View style={styles.topUserInfo}>
           {/* <Image style={styles.topUserInfoImage} /> */}
-          <input type="file" onChange={handleChange}/>
-          <button disabled={loading || !photo} onClick={handleClick}>Upload</button>
-          <img src={photoURL} alt="avatar"/>
+          <input type="file" onChange={handleChange} />
+          <button disabled={loading || !photo} onClick={handleClick}>
+            <Text>Upload</Text>
+          </button>
+          <img src={photoURL} alt="avatar" />
           <Text style={styles.topUserInfoName}>BOB</Text>
           <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
         </View>

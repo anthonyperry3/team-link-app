@@ -6,6 +6,7 @@ import {
   Image,
 } from "react-native";
 import React from "react";
+
 import { tailwind, useTailwind } from "tailwind-rn";
 import Swiper from "react-native-deck-swiper";
 
