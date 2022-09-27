@@ -6,9 +6,9 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 
-import { tailwind, useTailwind } from "tailwind-rn";
+import { useTailwind } from "tailwind-rn";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
 
@@ -43,6 +43,8 @@ const dummyData = [
 const Home = () => {
   const tw = useTailwind();
 
+  const cardSwipeRef = useRef(null);
+
   return (
     <SafeAreaView style={tw("flex-1")}>
       <View style={tw("flex-row items-center justify-center px-5 mt-5")}>
@@ -53,6 +55,7 @@ const Home = () => {
 
       <View style={tw("flex-1 -mt-6")}>
         <Swiper
+          ref={cardSwipeRef}
           containerStyle={{ backgroundColor: " transparent" }}
           cards={dummyData}
           stackSize={5}
@@ -113,6 +116,7 @@ const Home = () => {
       </View>
       <View style={tw("flex flex-row justify-evenly mb-12")}>
         <TouchableOpacity
+          onPress={() => cardSwipeRef.current.swipeLeft()}
           style={tw(
             "items-center justify-center rounded-full w-16 h-16 bg-red-200"
           )}
@@ -120,6 +124,7 @@ const Home = () => {
           <Entypo name="cross" size={26} color="red" />
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => cardSwipeRef.current.swipeRight()}
           style={tw(
             "items-center justify-center rounded-full w-16 h-16 bg-green-200"
           )}
