@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from "react-native";
 import React from "react";
 
@@ -56,6 +57,32 @@ const Home = () => {
           stackSize={5}
           cardIndex={0}
           animateCardOpacity
+          onSwipedLeft={() => {
+            console.log("Swipe PASSED");
+          }}
+          onSwipedRight={() => {
+            console.log("Swipe MATCH");
+          }}
+          overlayLabels={{
+            left: {
+              title: "SKIP",
+              style: {
+                label: {
+                  textAlign: "right",
+                  color: "red",
+                },
+              },
+            },
+            right: {
+              title: "MATCH",
+              style: {
+                label: {
+                  textAlign: "left",
+                  color: "#4DED30",
+                },
+              },
+            },
+          }}
           renderCard={(card) => (
             <View
               key={card.id}
@@ -65,6 +92,20 @@ const Home = () => {
                 style={tw("absolute top-0 h-full w-full rounded-xl")}
                 source={{ uri: card.photoUrl }}
               />
+              <View
+                style={[
+                  tw(
+                    "absolute bottom-0 bg-white w-full h-20 justify-between items-stretch flex-row px-6 py-2 rounded-b-xl"
+                  ),
+                  styles.cardShadow,
+                ]}
+              >
+                <View>
+                  <Text style={tw("text-xl font-bold")}>{card.username}</Text>
+                  <Text style={tw("text-xl font-bold")}>{card.location}</Text>
+                </View>
+                <Text style={tw("px-5")}>{card.bio}</Text>
+              </View>
             </View>
           )}
         />
@@ -74,3 +115,16 @@ const Home = () => {
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+  cardShadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1.41,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+});
