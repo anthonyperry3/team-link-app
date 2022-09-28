@@ -103,7 +103,7 @@ const ProfilePage = (props) => {
             <Text>Upload</Text>
           </button>
           <img src={photoURL} alt="avatar" />
-          <Text style={styles.topUserInfoName}>BOB</Text>
+          <Text style={styles.topUserInfoName}>John</Text>
           <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
         </View>
       </View>
