@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
+import { Icon } from "react-native-elements";
 
 import LandingPage from "./screens/LandingPage";
 import LoginPage from "./screens/LoginPage";
@@ -55,17 +56,20 @@ function App() {
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="HomePage" style={styles.container}>
-          <Tab.Screen
+          {/* <Tab.Screen
             name="LandingPage"
             options={{
               tabBarStyle: { display: "none" },
               headerShown: false,
             }}
             component={LandingPage}
-          />
+          /> */}
           <Tab.Screen
             name="LoginPage"
             options={{
+
+              tabBarIcon:() => (<Icon name='envelope' type='font-awesome' color='#444'/>),
+
               tabBarStyle: { display: "none" },
               headerShown: false,
             }}
@@ -74,24 +78,30 @@ function App() {
               <LoginPage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
+            <Tab.Screen
+              name="HomePage"
+              options={{
+              
+                tabBarIcon:() => (<Icon name='home' type='font-awesome' color='#444'/>),
+  
+                headerShown: false,
+              }}
+            >
+              {(props) => (
+                <HomePage {...props} userAuth={userAuth} userId={userId} />
+              )}
+            </Tab.Screen>
           <Tab.Screen
             name="ProfilePage"
             options={{
+
+              tabBarIcon:() => (<Icon name='user' type='font-awesome' color='#444'/>),
+
               headerShown: false,
             }}
           >
             {(props) => (
               <ProfilePage {...props} userAuth={userAuth} userId={userId} />
-            )}
-          </Tab.Screen>
-          <Tab.Screen
-            name="HomePage"
-            options={{
-              headerShown: false,
-            }}
-          >
-            {(props) => (
-              <HomePage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
           {/* <Tab.Screen name="ProfilePage" component={ProfilePage} /> */}
