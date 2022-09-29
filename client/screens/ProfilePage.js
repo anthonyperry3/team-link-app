@@ -19,6 +19,14 @@ import {
   update,
   remove,
 } from "firebase/database";
+
+import {
+  getStorage,
+  getDownloadURL,
+  uploadBytes,
+  ref as sRef,
+} from "firebase/storage";
+import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
 const ProfilePage = (props) => {
@@ -33,6 +41,7 @@ const ProfilePage = (props) => {
     "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
   );
   const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const [data, setData] = useState({});
 
@@ -42,22 +51,67 @@ const ProfilePage = (props) => {
   const userRef = ref(db, "users/" + props.userId);
   const newUserRef = push(userRef);
 
+  const storage = getStorage();
+
   // Image Picker
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
+    // console.log(pickerResult);
 
-    console.log(result);
+    handleImagePicked(pickerResult);
 
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!pickerResult.cancelled) {
+      setImage(pickerResult.uri);
     }
   };
+
+  const handleImagePicked = async (pickerResult) => {
+    try {
+      setUploading(true);
+
+      if (!pickerResult.cancelled) {
+        const uploadUrl = await uploadImageAsync(pickerResult.uri);
+        setImage(uploadUrl);
+      }
+    } catch (e) {
+      // console.log(e);
+      alert("Upload failed, sorry :(");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  async function uploadImageAsync(uri) {
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        // console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+
+    const fileRef = sRef(getStorage(), uuid.v4());
+    const result = await uploadBytes(fileRef, blob);
+
+    // We're done with the blob, close and release it
+    // blob.close();
+
+    return await getDownloadURL(fileRef);
+  }
 
   useEffect(() => {
     return onValue(userRef, (snapshot) => {
@@ -91,24 +145,8 @@ const ProfilePage = (props) => {
   };
 
   useEffect(() => {
-    if (currentUser && currentUser.photoURL) {
-      setPhotoURL(currentUser.photoURL);
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
     if (props.userId === "") props.navigation.navigate("LoginPage");
   }, [props.userId]);
-
-  function handleChange(e) {
-    if (e.target.files[0]) {
-      setPhoto(e.target.files[0]);
-    }
-  }
-
-  function handleClick() {
-    upload(photo, currentUser, setLoading);
-  }
 
   return (
     <ScrollView style={styles.container}>
@@ -132,27 +170,13 @@ const ProfilePage = (props) => {
             )}
           </View>
 
-          {/* input, button, and img cause errors on mobile devices and emulator, Works on web not mobile. */}
-          {/* <Image style={styles.topUserInfoImage} />
-          <input type="file" onChange={handleChange} />
-          <button disabled={loading || !photo} onClick={handleClick}>
-            <Text>Upload</Text>
-          </button>
-          <img src={photoURL} alt="avatar" /> */}
           <Text style={styles.topUserInfoName}>BOB</Text>
           <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
         </View>
       </View>
       <View style={styles.boxTwo}>
         <Text style={styles.aboutTitle}>About</Text>
-        {/* <View style={styles.inputContainers}>
-          <Text style={styles.inputTitles}>Full Name</Text>
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            style={styles.inputInfo}
-          />
-        </View> */}
+
         <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Username</Text>
           <TextInput
@@ -162,14 +186,6 @@ const ProfilePage = (props) => {
             style={styles.inputInfo}
           />
         </View>
-        {/* <View style={styles.inputContainers}>
-          <Text style={styles.inputTitles}>Location</Text>
-          <TextInput
-            value={location}
-            onChangeText={setLocation}
-            style={styles.inputInfo}
-          />
-        </View> */}
         <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Bio</Text>
           <TextInput
