@@ -19,6 +19,7 @@ import {
   update,
   remove,
 } from "firebase/database";
+import * as ImagePicker from "expo-image-picker";
 
 const ProfilePage = (props) => {
   const currentUser = useAuth();
