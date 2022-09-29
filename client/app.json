@@ -9,6 +9,7 @@
     "packagerOpts": {
       "sourceExts": ["cjs"]
     },
+    "plugins": ["expo-image-picker"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
