@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
@@ -18,6 +19,7 @@ import {
   update,
   remove,
 } from "firebase/database";
+import * as ImagePicker from "expo-image-picker";
 
 const ProfilePage = (props) => {
   const currentUser = useAuth();
@@ -30,6 +32,7 @@ const ProfilePage = (props) => {
   const [photoURL, setPhotoURL] = useState(
     "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
   );
+  const [image, setImage] = useState(null);
 
   const [data, setData] = useState({});
 
@@ -38,6 +41,23 @@ const ProfilePage = (props) => {
 
   const userRef = ref(db, "users/" + props.userId);
   const newUserRef = push(userRef);
+
+  // Image Picker
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   useEffect(() => {
     return onValue(userRef, (snapshot) => {
@@ -97,12 +117,28 @@ const ProfilePage = (props) => {
           <Text style={styles.pageTitle}>Profile</Text>
         </View>
         <View style={styles.topUserInfo}>
-          {/* <Image style={styles.topUserInfoImage} /> */}
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <Button
+              title="Pick an image from camera roll"
+              onPress={pickImage}
+            />
+            {image && (
+              <Image
+                source={{ uri: image }}
+                style={{ width: 200, height: 200 }}
+              />
+            )}
+          </View>
+
+          {/* input, button, and img cause errors on mobile devices and emulator, Works on web not mobile. */}
+          {/* <Image style={styles.topUserInfoImage} />
           <input type="file" onChange={handleChange} />
           <button disabled={loading || !photo} onClick={handleClick}>
             <Text>Upload</Text>
           </button>
-          <img src={photoURL} alt="avatar" />
+          <img src={photoURL} alt="avatar" /> */}
           <Text style={styles.topUserInfoName}>BOB</Text>
           <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
         </View>
