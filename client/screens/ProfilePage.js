@@ -49,6 +49,7 @@ const ProfilePage = (props) => {
   const db = getDatabase();
 
   const userRef = ref(db, "users/" + props.userId);
+
   const newUserRef = push(userRef);
 
   const storage = getStorage();
@@ -62,7 +63,6 @@ const ProfilePage = (props) => {
       aspect: [4, 3],
       quality: 1,
     });
-    // console.log(pickerResult);
 
     handleImagePicked(pickerResult);
 
@@ -80,7 +80,6 @@ const ProfilePage = (props) => {
         setImage(uploadUrl);
       }
     } catch (e) {
-      // console.log(e);
       alert("Upload failed, sorry :(");
     } finally {
       setUploading(false);
@@ -96,7 +95,6 @@ const ProfilePage = (props) => {
         resolve(xhr.response);
       };
       xhr.onerror = function (e) {
-        // console.log(e);
         reject(new TypeError("Network request failed"));
       };
       xhr.responseType = "blob";
@@ -104,24 +102,21 @@ const ProfilePage = (props) => {
       xhr.send(null);
     });
 
-    const fileRef = sRef(getStorage(), uuid.v4());
-    const result = await uploadBytes(fileRef, blob);
+    // const fileRef = sRef(getStorage(), uuid.v4());
+    const userImageRef = sRef(storage, `users/` + props.userId, uuid.v4());
+    const result = await uploadBytes(userImageRef, blob);
 
-    // We're done with the blob, close and release it
-    // blob.close();
-
-    return await getDownloadURL(fileRef);
+    return await getDownloadURL(userImageRef);
   }
 
   useEffect(() => {
     return onValue(userRef, (snapshot) => {
       if (snapshot.val() !== null) {
         const data = snapshot.val();
-        //console.log(data);
         let result = Object.keys(data).map((key) => {
           return { username: data[key].username, id: key }; //{ task: data[key].task, id: key };
         });
-        // console.log(data);
+
         setData(result);
       } else {
         set(newUserRef, { username: "", bio: "" });
@@ -130,7 +125,6 @@ const ProfilePage = (props) => {
     });
   }, []);
   const editUsername = (newUsername) => {
-    //console.log(userRef);
     update(userRef, { username: newUsername });
     setToggleEdit(!toggleEdit);
   };
