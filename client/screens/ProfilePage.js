@@ -119,7 +119,7 @@ const ProfilePage = (props) => {
         const reference = sRef(storage, `users/${props.userId}`);
         await getDownloadURL(reference).then((url) => {
           setImage(url);
-          console.log(url);
+          editProfileImage(url);
         });
       };
 
@@ -137,7 +137,7 @@ const ProfilePage = (props) => {
 
         setData(result);
       } else {
-        set(newUserRef, { username: "", bio: "" });
+        set(newUserRef, { username: "", bio: "", imageUrl: "" });
         setData({});
       }
     });
@@ -153,10 +153,13 @@ const ProfilePage = (props) => {
     setToggleEdit(!toggleEdit);
   };
 
+  const editProfileImage = (newImage) => {
+    update(userRef, { imageUrl: newImage });
+  };
+
   const signOut = () => {
     props.userAuth.signOut();
     setImage(null);
-    console.log(image);
   };
 
   return (
