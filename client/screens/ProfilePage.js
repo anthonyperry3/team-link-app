@@ -111,15 +111,21 @@ const ProfilePage = (props) => {
   }
 
   useEffect(() => {
-    const fetchImage = async () => {
-      const storage = getStorage();
-      const reference = sRef(storage, `users/${props.userId}`);
-      await getDownloadURL(reference).then((url) => {
-        setImage(url);
-      });
-    };
-    fetchImage();
-  }, []);
+    if (props.userId === "") {
+      props.navigation.navigate("LoginPage");
+    } else {
+      const fetchImage = async () => {
+        const storage = getStorage();
+        const reference = sRef(storage, `users/${props.userId}`);
+        await getDownloadURL(reference).then((url) => {
+          setImage(url);
+          console.log(url);
+        });
+      };
+
+      fetchImage();
+    }
+  }, [props.userId]);
 
   useEffect(() => {
     return onValue(userRef, (snapshot) => {
@@ -136,6 +142,7 @@ const ProfilePage = (props) => {
       }
     });
   }, []);
+
   const editUsername = (newUsername) => {
     update(userRef, { username: newUsername });
     setToggleEdit(!toggleEdit);
@@ -148,11 +155,9 @@ const ProfilePage = (props) => {
 
   const signOut = () => {
     props.userAuth.signOut();
+    setImage(null);
+    console.log(image);
   };
-
-  useEffect(() => {
-    if (props.userId === "") props.navigation.navigate("LoginPage");
-  }, [props.userId]);
 
   return (
     <ScrollView style={styles.container}>
