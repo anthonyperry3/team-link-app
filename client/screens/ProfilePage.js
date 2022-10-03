@@ -41,6 +41,7 @@ const ProfilePage = (props) => {
     "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
   );
   const [image, setImage] = useState(null);
+  // const [imageUrl, setImageUrl] = useState(undefined);
   const [uploading, setUploading] = useState(false);
 
   const [data, setData] = useState({});
@@ -103,11 +104,22 @@ const ProfilePage = (props) => {
     });
 
     // const fileRef = sRef(getStorage(), uuid.v4());
-    const userImageRef = sRef(storage, `users/` + props.userId, uuid.v4());
+    const userImageRef = sRef(storage, `users/${props.userId}`, uuid.v4());
     const result = await uploadBytes(userImageRef, blob);
 
     return await getDownloadURL(userImageRef);
   }
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const storage = getStorage();
+      const reference = sRef(storage, `users/${props.userId}`);
+      await getDownloadURL(reference).then((url) => {
+        setImage(url);
+      });
+    };
+    fetchImage();
+  }, []);
 
   useEffect(() => {
     return onValue(userRef, (snapshot) => {
