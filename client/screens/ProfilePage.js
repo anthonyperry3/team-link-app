@@ -111,15 +111,21 @@ const ProfilePage = (props) => {
   }
 
   useEffect(() => {
-    const fetchImage = async () => {
-      const storage = getStorage();
-      const reference = sRef(storage, `users/${props.userId}`);
-      await getDownloadURL(reference).then((url) => {
-        setImage(url);
-      });
-    };
-    fetchImage();
-  }, []);
+    if (props.userId === "") {
+      props.navigation.navigate("LoginPage");
+    } else {
+      const fetchImage = async () => {
+        const storage = getStorage();
+        const reference = sRef(storage, `users/${props.userId}`);
+        await getDownloadURL(reference).then((url) => {
+          setImage(url);
+          editProfileImage(url);
+        });
+      };
+
+      fetchImage();
+    }
+  }, [props.userId]);
 
   useEffect(() => {
     return onValue(userRef, (snapshot) => {
@@ -131,11 +137,12 @@ const ProfilePage = (props) => {
 
         setData(result);
       } else {
-        set(newUserRef, { username: "", bio: "" });
+        set(newUserRef, { username: "", bio: "", imageUrl: "" });
         setData({});
       }
     });
   }, []);
+
   const editUsername = (newUsername) => {
     update(userRef, { username: newUsername });
     setToggleEdit(!toggleEdit);
@@ -146,13 +153,14 @@ const ProfilePage = (props) => {
     setToggleEdit(!toggleEdit);
   };
 
-  const signOut = () => {
-    props.userAuth.signOut();
+  const editProfileImage = (newImage) => {
+    update(userRef, { imageUrl: newImage });
   };
 
-  useEffect(() => {
-    if (props.userId === "") props.navigation.navigate("LoginPage");
-  }, [props.userId]);
+  const signOut = () => {
+    props.userAuth.signOut();
+    setImage(null);
+  };
 
   return (
     <ScrollView style={styles.container}>

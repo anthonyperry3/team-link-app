@@ -106,10 +106,25 @@ function App() {
               )}
             </Tab.Screen>
           <Tab.Screen
+            name="HomePage"
+            options={{
+              tabBarIcon: () => (
+                <Icon name="home" type="font-awesome" color="#444" />
+              ),
+
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <HomePage {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
             name="ProfilePage"
             options={{
-
-              tabBarIcon:() => (<Icon name='user' type='font-awesome' color='#444'/>),
+              tabBarIcon: () => (
+                <Icon name="user" type="font-awesome" color="#444" />
+              ),
 
               headerShown: false,
             }}
