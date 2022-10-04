@@ -6,44 +6,65 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  onValue,
+  update,
+  remove,
+} from "firebase/database";
 
 import { useTailwind } from "tailwind-rn";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
 
-const dummyData = [
-  {
-    username: "Angel",
-    location: "Fresno, CA",
-    bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
-    photoUrl:
-      "https://media.istockphoto.com/vectors/gamer-esport-mascot-logo-design-vector-id1182383458?k=20&m=1182383458&s=612x612&w=0&h=Bz-KCJM-s292ES7f6PCOHxUK7-Dm34F-O67s9wfF02A=",
-    id: 1,
-  },
-  {
-    username: "Matt",
-    location: "Sacramento, CA",
-    bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
-    photoUrl:
-      "https://thumbs.dreamstime.com/z/gamers-mascot-logo-design-vector-modern-illustration-concept-style-badge-emblem-tshirt-printing-gamer-illustration-165721239.jpg",
-    id: 2,
-  },
+// const dummyData = [
+//   {
+//     username: "Angel",
+//     location: "Fresno, CA",
+//     bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
+//     photoUrl:
+//       "https://media.istockphoto.com/vectors/gamer-esport-mascot-logo-design-vector-id1182383458?k=20&m=1182383458&s=612x612&w=0&h=Bz-KCJM-s292ES7f6PCOHxUK7-Dm34F-O67s9wfF02A=",
+//     id: 1,
+//   },
+//   {
+//     username: "Matt",
+//     location: "Sacramento, CA",
+//     bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
+//     photoUrl:
+//       "https://thumbs.dreamstime.com/z/gamers-mascot-logo-design-vector-modern-illustration-concept-style-badge-emblem-tshirt-printing-gamer-illustration-165721239.jpg",
+//     id: 2,
+//   },
 
-  {
-    username: "Colton",
-    location: "Dallas, TX",
-    bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
-    photoUrl:
-      "https://img.freepik.com/premium-vector/dark-gamer-cloak-mascot-esport-logo-design_139366-592.jpg?w=2000",
-    id: 3,
-  },
-];
+//   {
+//     username: "Colton",
+//     location: "Dallas, TX",
+//     bio: "Semi-Pro Call of Duty League Player looking for 2 more players to join our org.",
+//     photoUrl:
+//       "https://img.freepik.com/premium-vector/dark-gamer-cloak-mascot-esport-logo-design_139366-592.jpg?w=2000",
+//     id: 3,
+//   },
+// ];
 
-const Home = () => {
+const Home = (props) => {
   const tw = useTailwind();
 
+  const db = getDatabase();
+  const userListRef = ref(db, "users/");
+
   const cardSwipeRef = useRef(null);
+
+  useEffect(() => {
+    return onValue(userListRef, (snapshot) => {
+      if (snapshot.val() !== null) {
+        const returnedUsers = snapshot.val();
+        console.log(returnedUsers);
+      }
+    });
+  }, []);
 
   return (
     <SafeAreaView style={tw("flex-1")}>
@@ -54,7 +75,7 @@ const Home = () => {
       </View>
 
       <View style={tw("flex-1 -mt-6")}>
-        <Swiper
+        {/* <Swiper
           ref={cardSwipeRef}
           containerStyle={{ backgroundColor: " transparent" }}
           cards={dummyData}
@@ -112,7 +133,7 @@ const Home = () => {
               </View>
             </View>
           )}
-        />
+        /> */}
       </View>
       <View style={tw("flex flex-row justify-evenly mb-12")}>
         <TouchableOpacity

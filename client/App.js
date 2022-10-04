@@ -19,25 +19,6 @@ import utilities from "./tailwind.json";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// function HomeTabs() {
-//   const [userId, setUserId] = useState("");
-
-//   const userAuth = getAuth();
-
-//   useEffect(() => {
-//     onAuthStateChanged(userAuth, (user) => {
-//       if (user !== null) {
-//         setUserId(user.uid);
-//       } else {
-//         setUserId("");
-//       }
-//     });
-//   }, []);
-//   return (
-
-//   );
-// }
-
 function App() {
   const [userId, setUserId] = useState("");
 
@@ -57,21 +38,22 @@ function App() {
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="HomePage" style={styles.container}>
-          {/* <Tab.Screen
+          <Tab.Screen
             name="LandingPage"
             options={{
               tabBarStyle: { display: "none" },
               headerShown: false,
             }}
             component={LandingPage}
-          /> */}
+          />
           <Tab.Screen
             name="LoginPage"
             options={{
+              tabBarIcon: () => (
+                <Icon name="list" type="font-awesome" color="#444" />
+              ),
 
-              tabBarIcon:() => (<Icon name='list' type='font-awesome' color='#444'/>),
-
-              tabBarStyle: {display: "none"},
+              tabBarStyle: { display: "none" },
               headerShown: false,
             }}
           >
@@ -82,8 +64,9 @@ function App() {
           <Tab.Screen
             name="MatchPage"
             options={{
-
-              tabBarIcon:() => (<Icon name='list' type='font-awesome' color='#444'/>),
+              tabBarIcon: () => (
+                <Icon name="list" type="font-awesome" color="#444" />
+              ),
 
               headerShown: false,
             }}
@@ -92,19 +75,6 @@ function App() {
               <MatchPage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
-            <Tab.Screen
-              name="HomePage"
-              options={{
-              
-                tabBarIcon:() => (<Icon name='home' type='font-awesome' color='#444'/>),
-  
-                headerShown: false,
-              }}
-            >
-              {(props) => (
-                <HomePage {...props} userAuth={userAuth} userId={userId} />
-              )}
-            </Tab.Screen>
           <Tab.Screen
             name="HomePage"
             options={{
@@ -119,6 +89,7 @@ function App() {
               <HomePage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
+
           <Tab.Screen
             name="ProfilePage"
             options={{
@@ -133,21 +104,7 @@ function App() {
               <ProfilePage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
-          {/* <Tab.Screen name="ProfilePage" component={ProfilePage} /> */}
-          {/* <Tab.Screen name="Matches" component={Matches} /> */}
         </Tab.Navigator>
-        {/* <Stack.Navigator
-        initialRouteName="LoginPage"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="Landing" component={LandingPage} />
-        <Stack.Screen name="LoginPage">
-          {(props) => (
-            <LoginPage {...props} userAuth={userAuth} userId={userId} />
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Home" component={HomeTabs} /> */}
-        {/* </Stack.Navigator> */}
       </NavigationContainer>
     </TailwindProvider>
   );
