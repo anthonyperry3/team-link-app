@@ -18,24 +18,6 @@ import utilities from "./tailwind.json";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// function HomeTabs() {
-//   const [userId, setUserId] = useState("");
-
-//   const userAuth = getAuth();
-
-//   useEffect(() => {
-//     onAuthStateChanged(userAuth, (user) => {
-//       if (user !== null) {
-//         setUserId(user.uid);
-//       } else {
-//         setUserId("");
-//       }
-//     });
-//   }, []);
-//   return (
-
-//   );
-// }
 
 function App() {
   const [userId, setUserId] = useState("");
