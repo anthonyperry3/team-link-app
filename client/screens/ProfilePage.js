@@ -28,8 +28,10 @@ import {
 } from "firebase/storage";
 import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
+import { useIsFocused } from "@react-navigation/native";
 
 const ProfilePage = (props) => {
+  const [data, setData] = useState({});
   const currentUser = useAuth();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -44,16 +46,14 @@ const ProfilePage = (props) => {
   // const [imageUrl, setImageUrl] = useState(undefined);
   const [uploading, setUploading] = useState(false);
 
-  const [data, setData] = useState({});
-
   const [toggleEdit, setToggleEdit] = useState(false);
   const db = getDatabase();
-
   const userRef = ref(db, "users/" + props.userId);
 
   const newUserRef = push(userRef);
 
   const storage = getStorage();
+  const isFocused = useIsFocused();
 
   // Image Picker
   const pickImage = async () => {
@@ -131,17 +131,20 @@ const ProfilePage = (props) => {
     return onValue(userRef, (snapshot) => {
       if (snapshot.val() !== null) {
         const data = snapshot.val();
-        let result = Object.keys(data).map((key) => {
-          return { username: data[key].username, id: key }; //{ task: data[key].task, id: key };
-        });
 
-        setData(result);
+        setData(data);
+        setUsername(data.username);
+        setBio(data.bio);
+        setLocation(data.location);
       } else {
-        set(newUserRef, { username: "", bio: "", imageUrl: "" });
+        set(newUserRef, { username: "", bio: "", location: "", imageUrl: "" });
+        setUsername("");
+        setBio("");
+        setLocation("");
         setData({});
       }
     });
-  }, []);
+  }, [isFocused]);
 
   const editUsername = (newUsername) => {
     update(userRef, { username: newUsername });
@@ -153,13 +156,20 @@ const ProfilePage = (props) => {
     setToggleEdit(!toggleEdit);
   };
 
+  const editLocation = (newLocation) => {
+    update(userRef, { location: newLocation });
+    setToggleEdit(!toggleEdit);
+  };
   const editProfileImage = (newImage) => {
     update(userRef, { imageUrl: newImage });
   };
 
   const signOut = () => {
-    props.userAuth.signOut();
     setImage(null);
+    setBio("");
+    setLocation("");
+    setUsername("");
+    props.userAuth.signOut();
   };
 
   return (
@@ -184,8 +194,12 @@ const ProfilePage = (props) => {
             )}
           </View>
 
-          <Text style={styles.topUserInfoName}>BOB</Text>
-          <Text style={styles.topUserInfoLocation}>Fresno,CA</Text>
+          <Text style={styles.topUserInfoName}>
+            {username ? username : null}
+          </Text>
+          <Text style={styles.topUserInfoLocation}>
+            {location ? location : null}
+          </Text>
         </View>
       </View>
       <View style={styles.boxTwo}>
@@ -206,6 +220,15 @@ const ProfilePage = (props) => {
             value={bio}
             onBlur={() => editBio(bio)}
             onChangeText={setBio}
+            style={styles.inputInfo}
+          />
+        </View>
+        <View style={styles.inputContainers}>
+          <Text style={styles.inputTitles}>Location</Text>
+          <TextInput
+            value={location}
+            onBlur={() => editLocation(location)}
+            onChangeText={setLocation}
             style={styles.inputInfo}
           />
         </View>
