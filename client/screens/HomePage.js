@@ -37,12 +37,9 @@ const Home = (props) => {
     return onValue(userListRef, (snapshot) => {
       if (snapshot.val() !== null) {
         const returnedUsers = snapshot.val();
-        // console.log(returnedUsers);
         let result = Object.keys(returnedUsers).map(
           (key) => returnedUsers[key]
         );
-        // console.log(result);
-        // console.log(result[1].bio);
         setUsersList(result);
       }
     });
