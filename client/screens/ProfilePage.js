@@ -29,6 +29,7 @@ import {
 import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
 import { useIsFocused } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProfilePage = (props) => {
   const [data, setData] = useState({});
@@ -186,6 +187,7 @@ const ProfilePage = (props) => {
               title="Pick an image from camera roll"
               onPress={pickImage}
             />
+
             {image && (
               <Image
                 source={{ uri: image }}
