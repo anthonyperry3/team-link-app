@@ -15,6 +15,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { TailwindProvider } from "tailwind-rn";
 import utilities from "./tailwind.json";
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -41,6 +43,9 @@ function App() {
           <Tab.Screen
             name="LandingPage"
             options={{
+              tabBarIcon: () => (
+                <AntDesign name="layout" size={24} color="black" />
+              ),
               tabBarStyle: { display: "none" },
               headerShown: false,
             }}
@@ -50,7 +55,7 @@ function App() {
             name="LoginPage"
             options={{
               tabBarIcon: () => (
-                <Icon name="list" type="font-awesome" color="#444" />
+                <AntDesign name="login" size={24} color="black" />
               ),
 
               tabBarStyle: { display: "none" },
@@ -65,7 +70,7 @@ function App() {
             name="MatchPage"
             options={{
               tabBarIcon: () => (
-                <Icon name="list" type="font-awesome" color="#444" />
+                <Ionicons name="md-people" size={24} color="black" />
               ),
 
               headerShown: false,
