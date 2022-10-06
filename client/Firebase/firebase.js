@@ -15,7 +15,7 @@ import { getFirestore } from "firebase/firestore";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const storage = getStorage();
-const dbF = getFirestore(app);
+const db = getFirestore(app);
 
 //Custom Hook
 export function useAuth() {

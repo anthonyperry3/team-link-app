@@ -37,7 +37,7 @@ function App() {
   return (
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="ProfilePage" style={styles.container}>
+        <Tab.Navigator initialRouteName="HomePage" style={styles.container}>
           <Tab.Screen
             name="LandingPage"
             options={{
