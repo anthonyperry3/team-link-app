@@ -6,43 +6,41 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import React, { useRef, useEffect, useState } from "react";
-import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  onValue,
-  update,
-  remove,
-} from "firebase/database";
+import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-
 import { useTailwind } from "tailwind-rn";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
+import { doc, onSnapshot, collection } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import app from "../Firebase/firebase";
 
 const Home = (props) => {
-  const [usersList, setUsersList] = useState({});
+  const [usersList, setUsersList] = useState([]);
   const isFocused = useIsFocused();
 
   const tw = useTailwind();
 
-  const db = getDatabase();
-  const userListRef = ref(db, "users/");
+  const db = getFirestore(app);
 
   const cardSwipeRef = useRef(null);
 
   useEffect(() => {
-    return onValue(userListRef, (snapshot) => {
-      if (snapshot.val() !== null) {
-        const returnedUsers = snapshot.val();
-        let result = Object.keys(returnedUsers).map(
-          (key) => returnedUsers[key]
+    const fetchUsers = async () => {
+      onSnapshot(collection(db, "users"), (snapshot) => {
+        setUsersList(
+          snapshot.docs
+            .filter((doc) => doc.id !== props.userId)
+            .map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
         );
-        setUsersList(result);
-      }
-    });
+      });
+    };
+
+    console.log(usersList);
+    fetchUsers();
   }, []);
 
   return (
@@ -95,7 +93,7 @@ const Home = (props) => {
               >
                 <Image
                   style={tw("absolute top-0 h-full w-full rounded-xl")}
-                  source={{ uri: card.imageUrl }}
+                  source={{ uri: card.image }}
                 />
                 <View
                   style={[

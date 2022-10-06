@@ -9,16 +9,9 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
-import { upload, useAuth } from "../Firebase/firebase";
-import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  onValue,
-  update,
-  remove,
-} from "firebase/database";
+import { getFirestore } from "firebase/firestore";
+import app from "../Firebase/firebase";
+import { doc, setDoc, onSnapshot, collection } from "@firebase/firestore";
 
 import {
   getStorage,
@@ -28,33 +21,17 @@ import {
 } from "firebase/storage";
 import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
-import { useIsFocused } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
 
 const ProfilePage = (props) => {
-  const [data, setData] = useState({});
-  const currentUser = useAuth();
-  const [name, setName] = useState("");
+  const [data, setData] = useState();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
-  const [photo, setPhoto] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoURL, setPhotoURL] = useState(
-    "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
-  );
   const [image, setImage] = useState(null);
-  // const [imageUrl, setImageUrl] = useState(undefined);
   const [uploading, setUploading] = useState(false);
 
-  const [toggleEdit, setToggleEdit] = useState(false);
-  const db = getDatabase();
-  const userRef = ref(db, "users/" + props.userId);
-
-  const newUserRef = push(userRef);
-
   const storage = getStorage();
-  const isFocused = useIsFocused();
+  const db = getFirestore(app);
 
   // Image Picker
   const pickImage = async () => {
@@ -111,6 +88,16 @@ const ProfilePage = (props) => {
     return await getDownloadURL(userImageRef);
   }
 
+  const updateUserProfile = () => {
+    setDoc(doc(db, "users", props.userId), {
+      id: props.userId,
+      username: username,
+      bio: bio,
+      location: location,
+      image: image,
+    });
+  };
+
   useEffect(() => {
     if (props.userId === "") {
       props.navigation.navigate("LoginPage");
@@ -120,50 +107,13 @@ const ProfilePage = (props) => {
         const reference = sRef(storage, `users/${props.userId}`);
         await getDownloadURL(reference).then((url) => {
           setImage(url);
-          editProfileImage(url);
+          // editProfileImage(url);
         });
       };
 
       fetchImage();
     }
   }, [props.userId]);
-
-  useEffect(() => {
-    return onValue(userRef, (snapshot) => {
-      if (snapshot.val() !== null) {
-        const data = snapshot.val();
-
-        setData(data);
-        setUsername(data.username);
-        setBio(data.bio);
-        setLocation(data.location);
-      } else {
-        set(newUserRef, { username: "", bio: "", location: "", imageUrl: "" });
-        setUsername("");
-        setBio("");
-        setLocation("");
-        setData({});
-      }
-    });
-  }, [isFocused]);
-
-  const editUsername = (newUsername) => {
-    update(userRef, { username: newUsername });
-    setToggleEdit(!toggleEdit);
-  };
-
-  const editBio = (newBio) => {
-    update(userRef, { bio: newBio });
-    setToggleEdit(!toggleEdit);
-  };
-
-  const editLocation = (newLocation) => {
-    update(userRef, { location: newLocation });
-    setToggleEdit(!toggleEdit);
-  };
-  const editProfileImage = (newImage) => {
-    update(userRef, { imageUrl: newImage });
-  };
 
   const signOut = () => {
     setImage(null);
@@ -173,36 +123,77 @@ const ProfilePage = (props) => {
     props.userAuth.signOut();
   };
 
+  useEffect(() => {
+    const fetchUserInfo = () => {
+      onSnapshot(doc(db, `users/${props.userId}`), (snapshot) => {
+        console.log(snapshot.data());
+        setData(snapshot.data());
+        console.log(data);
+      });
+    };
+
+    fetchUserInfo();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.boxOne}>
         <View>
           <Text style={styles.pageTitle}>Profile</Text>
         </View>
-        <View style={styles.topUserInfo}>
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Button
-              title="Pick an image from camera roll"
-              onPress={pickImage}
-            />
-
-            {image && (
-              <Image
-                source={{ uri: image }}
-                style={{ width: 200, height: 200 }}
+        {data ? (
+          <View style={styles.topUserInfo}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                title="Pick an image from camera roll"
+                onPress={pickImage}
               />
-            )}
-          </View>
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+            </View>
 
-          <Text style={styles.topUserInfoName}>
-            {username ? username : null}
-          </Text>
-          <Text style={styles.topUserInfoLocation}>
-            {location ? location : null}
-          </Text>
-        </View>
+            <Text style={styles.topUserInfoName}>{data.username}</Text>
+            <Text style={styles.topUserInfoLocation}>
+              {data.location ? data.location : null}
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.topUserInfo}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                title="Pick an image from camera roll"
+                onPress={pickImage}
+              />
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+            </View>
+
+            <Text style={styles.topUserInfoName}>Angel</Text>
+            <Text style={styles.topUserInfoLocation}>
+              {location ? location : null}
+            </Text>
+          </View>
+        )}
       </View>
       <View style={styles.boxTwo}>
         <Text style={styles.aboutTitle}>About</Text>
@@ -211,7 +202,6 @@ const ProfilePage = (props) => {
           <Text style={styles.inputTitles}>Username</Text>
           <TextInput
             value={username}
-            onBlur={() => editUsername(username)}
             onChangeText={setUsername}
             style={styles.inputInfo}
           />
@@ -220,7 +210,6 @@ const ProfilePage = (props) => {
           <Text style={styles.inputTitles}>Bio</Text>
           <TextInput
             value={bio}
-            onBlur={() => editBio(bio)}
             onChangeText={setBio}
             style={styles.inputInfo}
           />
@@ -229,11 +218,15 @@ const ProfilePage = (props) => {
           <Text style={styles.inputTitles}>Location</Text>
           <TextInput
             value={location}
-            onBlur={() => editLocation(location)}
             onChangeText={setLocation}
             style={styles.inputInfo}
           />
         </View>
+      </View>
+      <View>
+        <TouchableOpacity onPress={updateUserProfile}>
+          <Text>Update Profile</Text>
+        </TouchableOpacity>
       </View>
 
       <View>
