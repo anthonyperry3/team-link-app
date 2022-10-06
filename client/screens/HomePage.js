@@ -29,21 +29,11 @@ const Home = (props) => {
   const tw = useTailwind();
 
   const db = getDatabase();
-  const userListRef = ref(db, "users/");
+
 
   const cardSwipeRef = useRef(null);
 
-  useEffect(() => {
-    return onValue(userListRef, (snapshot) => {
-      if (snapshot.val() !== null) {
-        const returnedUsers = snapshot.val();
-        let result = Object.keys(returnedUsers).map(
-          (key) => returnedUsers[key]
-        );
-        setUsersList(result);
-      }
-    });
-  }, []);
+
 
   return (
     <SafeAreaView style={tw("flex-1")}>
