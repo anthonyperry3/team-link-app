@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./ProfilePageStyles";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
-import { doc, setDoc } from "@firebase/firestore";
+import { doc, setDoc, onSnapshot, collection } from "@firebase/firestore";
 
 import {
   getStorage,
@@ -23,7 +23,7 @@ import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
 const ProfilePage = (props) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
@@ -123,35 +123,77 @@ const ProfilePage = (props) => {
     props.userAuth.signOut();
   };
 
+  useEffect(() => {
+    const fetchUserInfo = () => {
+      onSnapshot(doc(db, `users/${props.userId}`), (snapshot) => {
+        console.log(snapshot.data());
+        setData(snapshot.data());
+        console.log(data);
+      });
+    };
+
+    fetchUserInfo();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.boxOne}>
         <View>
           <Text style={styles.pageTitle}>Profile</Text>
         </View>
-        <View style={styles.topUserInfo}>
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Button
-              title="Pick an image from camera roll"
-              onPress={pickImage}
-            />
-            {image && (
-              <Image
-                source={{ uri: image }}
-                style={{ width: 200, height: 200 }}
+        {data ? (
+          <View style={styles.topUserInfo}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                title="Pick an image from camera roll"
+                onPress={pickImage}
               />
-            )}
-          </View>
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+            </View>
 
-          <Text style={styles.topUserInfoName}>
-            {username ? username : null}
-          </Text>
-          <Text style={styles.topUserInfoLocation}>
-            {location ? location : null}
-          </Text>
-        </View>
+            <Text style={styles.topUserInfoName}>{data.username}</Text>
+            <Text style={styles.topUserInfoLocation}>
+              {data.location ? data.location : null}
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.topUserInfo}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                title="Pick an image from camera roll"
+                onPress={pickImage}
+              />
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+            </View>
+
+            <Text style={styles.topUserInfoName}>Angel</Text>
+            <Text style={styles.topUserInfoLocation}>
+              {location ? location : null}
+            </Text>
+          </View>
+        )}
       </View>
       <View style={styles.boxTwo}>
         <Text style={styles.aboutTitle}>About</Text>

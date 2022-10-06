@@ -29,13 +29,17 @@ const Home = (props) => {
     const fetchUsers = async () => {
       onSnapshot(collection(db, "users"), (snapshot) => {
         setUsersList(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
+          snapshot.docs
+            .filter((doc) => doc.id !== props.userId)
+            .map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
         );
       });
     };
+
+    console.log(usersList);
     fetchUsers();
   }, []);
 
