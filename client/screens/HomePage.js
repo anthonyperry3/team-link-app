@@ -17,6 +17,8 @@ import {
   onSnapshot,
   collection,
   getDocs,
+  getDoc,
+  DocumentSnapshot,
 } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
@@ -33,10 +35,10 @@ const Home = (props) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const passes = await getDocs(collection(db, "users", props.userId)).then(
-        (snapshot) => snapshot.docs.map((doc) => doc.id)
-      );
-      console.log(passes);
+      // const passes = await getDocs(collection(db, "users", props.userId)).then(
+      //   (snapshot) => snapshot.docs.map((doc) => doc.id)
+      // );
+      // console.log(passes);
 
       onSnapshot(collection(db, "users"), (snapshot) => {
         setUsersList(
@@ -62,13 +64,32 @@ const Home = (props) => {
     setDoc(doc(db, "users", props.userId, "passed", userSwiped.id), userSwiped);
   };
 
-  const swipeRight = (cardIndex) => {
+  const swipeRight = async (cardIndex) => {
     if (!usersList[cardIndex]) return;
 
     const userSwiped = usersList[cardIndex];
-    // console.log(`You swiped MATCH on ${userSwiped.username}`);
+    const loggedInProfile = await (
+      await getDoc(doc(db, "users", props.userId))
+    ).data();
+    console.log(loggedInProfile);
 
-    setDoc(doc(db, "users", props.userId, "swipes", userSwiped.id), userSwiped);
+    getDoc(doc(db, "users", userSwiped.id, "swipes", props.userId)).then(
+      (DocumentSnapshot) => {
+        if (DocumentSnapshot.exists()) {
+          setDoc(
+            doc(db, "users", props.userId, "swipes", userSwiped.id),
+            userSwiped
+          );
+          console.log(`You've matched with ${userSwiped.username}`);
+        } else {
+          console.log(`You swiped on ${userSwiped.username}`);
+          setDoc(
+            doc(db, "users", props.userId, "swipes", userSwiped.id),
+            userSwiped
+          );
+        }
+      }
+    );
   };
 
   return (
