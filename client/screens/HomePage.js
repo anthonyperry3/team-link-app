@@ -19,6 +19,7 @@ import {
   getDocs,
   getDoc,
   DocumentSnapshot,
+  serverTimestamp,
 } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
@@ -32,6 +33,8 @@ const Home = (props) => {
   const db = getFirestore(app);
 
   const cardSwipeRef = useRef(null);
+
+  const generateMatchId = (id1, id2) => (id1 > id2 ? id1 + id2 : id2 + id1);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -59,7 +62,6 @@ const Home = (props) => {
     if (!usersList[cardIndex]) return;
 
     const userSwiped = usersList[cardIndex];
-    // console.log(`You swiped PASS on ${userSwiped.username}`);
 
     setDoc(doc(db, "users", props.userId, "passed", userSwiped.id), userSwiped);
   };
@@ -71,7 +73,6 @@ const Home = (props) => {
     const loggedInProfile = await (
       await getDoc(doc(db, "users", props.userId))
     ).data();
-    console.log(loggedInProfile);
 
     getDoc(doc(db, "users", userSwiped.id, "swipes", props.userId)).then(
       (DocumentSnapshot) => {
@@ -80,9 +81,24 @@ const Home = (props) => {
             doc(db, "users", props.userId, "swipes", userSwiped.id),
             userSwiped
           );
-          console.log(`You've matched with ${userSwiped.username}`);
+
+          setDoc(
+            doc(db, "matches", generateMatchId(props.userId, userSwiped.id)),
+            {
+              users: {
+                [props.userId]: loggedInProfile,
+                [userSwiped.id]: userSwiped,
+              },
+              usersMatched: [props.userId, userSwiped.id],
+              timestamp: serverTimestamp(),
+            }
+          );
+
+          props.navigation.navigate("MatchPage", {
+            loggedInProfile,
+            userSwiped,
+          });
         } else {
-          console.log(`You swiped on ${userSwiped.username}`);
           setDoc(
             doc(db, "users", props.userId, "swipes", userSwiped.id),
             userSwiped
