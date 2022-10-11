@@ -38,10 +38,6 @@ const Home = (props) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      // const passes = await getDocs(collection(db, "users", props.userId)).then(
-      //   (snapshot) => snapshot.docs.map((doc) => doc.id)
-      // );
-      // console.log(passes);
 
       onSnapshot(collection(db, "users"), (snapshot) => {
         setUsersList(
