@@ -11,7 +11,13 @@ import { useIsFocused } from "@react-navigation/native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
-import { doc, onSnapshot, collection } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  onSnapshot,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
 
@@ -27,6 +33,11 @@ const Home = (props) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      const passes = await getDocs(collection(db, "users", props.userId)).then(
+        (snapshot) => snapshot.docs.map((doc) => doc.id)
+      );
+      console.log(passes);
+
       onSnapshot(collection(db, "users"), (snapshot) => {
         setUsersList(
           snapshot.docs
@@ -39,9 +50,26 @@ const Home = (props) => {
       });
     };
 
-    console.log(usersList);
     fetchUsers();
   }, []);
+
+  const swipeLeft = (cardIndex) => {
+    if (!usersList[cardIndex]) return;
+
+    const userSwiped = usersList[cardIndex];
+    // console.log(`You swiped PASS on ${userSwiped.username}`);
+
+    setDoc(doc(db, "users", props.userId, "passed", userSwiped.id), userSwiped);
+  };
+
+  const swipeRight = (cardIndex) => {
+    if (!usersList[cardIndex]) return;
+
+    const userSwiped = usersList[cardIndex];
+    // console.log(`You swiped MATCH on ${userSwiped.username}`);
+
+    setDoc(doc(db, "users", props.userId, "swipes", userSwiped.id), userSwiped);
+  };
 
   return (
     <SafeAreaView style={tw("flex-1")}>
@@ -60,11 +88,13 @@ const Home = (props) => {
             stackSize={5}
             cardIndex={0}
             animateCardOpacity
-            onSwipedLeft={() => {
+            onSwipedLeft={(cardIndex) => {
               console.log("Swipe PASSED");
+              swipeLeft(cardIndex);
             }}
-            onSwipedRight={() => {
+            onSwipedRight={(cardIndex) => {
               console.log("Swipe MATCH");
+              swipeRight(cardIndex);
             }}
             overlayLabels={{
               left: {
