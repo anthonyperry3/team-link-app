@@ -11,7 +11,16 @@ import { useIsFocused } from "@react-navigation/native";
 import { useTailwind } from "tailwind-rn";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
-import { doc, onSnapshot, collection } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  onSnapshot,
+  collection,
+  getDocs,
+  getDoc,
+  DocumentSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
 
@@ -25,8 +34,11 @@ const Home = (props) => {
 
   const cardSwipeRef = useRef(null);
 
+  const generateMatchId = (id1, id2) => (id1 > id2 ? id1 + id2 : id2 + id1);
+
   useEffect(() => {
     const fetchUsers = async () => {
+
       onSnapshot(collection(db, "users"), (snapshot) => {
         setUsersList(
           snapshot.docs
@@ -39,9 +51,58 @@ const Home = (props) => {
       });
     };
 
-    console.log(usersList);
     fetchUsers();
   }, []);
+
+  const swipeLeft = (cardIndex) => {
+    if (!usersList[cardIndex]) return;
+
+    const userSwiped = usersList[cardIndex];
+
+    setDoc(doc(db, "users", props.userId, "passed", userSwiped.id), userSwiped);
+  };
+
+  const swipeRight = async (cardIndex) => {
+    if (!usersList[cardIndex]) return;
+
+    const userSwiped = usersList[cardIndex];
+    const loggedInProfile = await (
+      await getDoc(doc(db, "users", props.userId))
+    ).data();
+
+    getDoc(doc(db, "users", userSwiped.id, "swipes", props.userId)).then(
+      (DocumentSnapshot) => {
+        if (DocumentSnapshot.exists()) {
+          setDoc(
+            doc(db, "users", props.userId, "swipes", userSwiped.id),
+            userSwiped
+          );
+
+          setDoc(
+            doc(db, "matches", generateMatchId(props.userId, userSwiped.id)),
+            {
+              users: {
+                [props.userId]: loggedInProfile,
+                [userSwiped.id]: userSwiped,
+              },
+              usersMatched: [props.userId, userSwiped.id],
+              timestamp: serverTimestamp(),
+            }
+          );
+
+          props.navigation.navigate("MatchPage", {
+            loggedInProfile,
+            userSwiped,
+          });
+        } else {
+          setDoc(
+            doc(db, "users", props.userId, "swipes", userSwiped.id),
+            userSwiped
+          );
+        }
+      }
+    );
+  };
 
   return (
     <SafeAreaView style={tw("flex-1")}>
@@ -60,11 +121,13 @@ const Home = (props) => {
             stackSize={5}
             cardIndex={0}
             animateCardOpacity
-            onSwipedLeft={() => {
+            onSwipedLeft={(cardIndex) => {
               console.log("Swipe PASSED");
+              swipeLeft(cardIndex);
             }}
-            onSwipedRight={() => {
+            onSwipedRight={(cardIndex) => {
               console.log("Swipe MATCH");
+              swipeRight(cardIndex);
             }}
             overlayLabels={{
               left: {
