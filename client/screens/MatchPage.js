@@ -1,21 +1,46 @@
-import { Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { onSnapshot } from "firebase/firestore";
+import { collection, doc, query, where } from "@firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import app from "../Firebase/firebase";
+import { ListItem } from "react-native-elements";
+import MessageRow from "../components/MessageRow";
 
-const MatchPage = () => {
-  const { params } = useRoute();
+const MatchPage = (props) => {
+  const [matches, setMatches] = useState([]);
 
-  const { loggedInProfile, userSwiped } = params;
+  const db = getFirestore(app);
 
-  return (
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "matches"),
+        where("usersMatched", "array-contains", props.userId)
+      ),
+      (snapshot) =>
+        setMatches(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        )
+    );
+  }, [props.userId]);
+
+  return matches.length > 0 ? (
+    <FlatList
+      data={matches}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <MessageRow matchDetails={item} userId={props.userId} props={props} />
+      )}
+    />
+  ) : (
     <View>
-      <Text>MatchPage</Text>
-      <Text>
-        {loggedInProfile.username} and {userSwiped.username} have matched. Send
-        your first message to link up in game!
-      </Text>
+      <Text>No matches at the moment.. Keep searching!</Text>
     </View>
   );
 };
-
 export default MatchPage;

@@ -126,9 +126,7 @@ const ProfilePage = (props) => {
   useEffect(() => {
     const fetchUserInfo = () => {
       onSnapshot(doc(db, `users/${props.userId}`), (snapshot) => {
-        console.log(snapshot.data());
         setData(snapshot.data());
-        console.log(data);
       });
     };
 

@@ -8,6 +8,7 @@ import LoginPage from "./screens/LoginPage";
 import ProfilePage from "./screens/ProfilePage";
 import HomePage from "./screens/HomePage";
 import MatchPage from "./screens/MatchPage";
+import ChatRoom from "./screens/ChatRoom";
 import firebase from "./Firebase/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -39,7 +40,7 @@ function App() {
   return (
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="HomePage" style={styles.container}>
+        <Tab.Navigator initialRouteName="MatchPage" style={styles.container}>
           <Tab.Screen
             name="LandingPage"
             options={{
@@ -107,6 +108,20 @@ function App() {
           >
             {(props) => (
               <ProfilePage {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="ChatRoom"
+            options={{
+              tabBarIcon: () => (
+                <Icon name="user" type="font-awesome" color="#444" />
+              ),
+
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <ChatRoom {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
         </Tab.Navigator>
