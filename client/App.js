@@ -71,7 +71,12 @@ function App() {
             name="MatchPage"
             options={{
               tabBarIcon: () => (
-                <AntDesign name="wechat" size={24} color="#a9a9a9" />
+                <Icon
+                  name="comments"
+                  type="font-awesome"
+                  size={24}
+                  color="#444"
+                />
               ),
 
               headerShown: false,

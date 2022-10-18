@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 
 const MessageRow = ({ matchDetails, userId, props }) => {
@@ -18,13 +18,15 @@ const MessageRow = ({ matchDetails, userId, props }) => {
   }, [matchDetails, userId]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <TouchableOpacity onPress={() => props.navigation.navigate("ChatRoom")}>
-        <Image
-          style={styles.matchedUserImage}
-          source={{ uri: matchedUserInfo?.image }}
-        />
-        <Text>{matchedUserInfo?.username}</Text>
+        <View style={styles.child}>
+          <Image
+            style={styles.matchedUserImage}
+            source={{ uri: matchedUserInfo?.image }}
+            />
+          <Text style={styles.username}>{matchedUserInfo?.username}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -33,8 +35,25 @@ const MessageRow = ({ matchDetails, userId, props }) => {
 export default MessageRow;
 
 const styles = StyleSheet.create({
-  matchedUserImage: {
+  container: {
+    display: 'flex',
+  },
+  child: {
+    flexDirection: 'row',
+    justifyContent:'flex-start',
+    alignItems: 'center',
+    borderBottomColor: "#444",
     height: 100,
-    width: 100,
+    marginLeft: 12,
+  },
+  username: {
+    fontSize: 25,
+    paddingLeft: 10,
+  },
+  matchedUserImage: {
+    marginLeft: 10,
+    height: 75,
+    width: 75,
+    borderRadius: 37.5,
   },
 });
