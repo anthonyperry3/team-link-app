@@ -71,7 +71,7 @@ function App() {
             name="MatchPage"
             options={{
               tabBarIcon: () => (
-                <Ionicons name="md-people" size={24} color="black" />
+                <AntDesign name="wechat" size={24} color="#a9a9a9" />
               ),
 
               headerShown: false,
@@ -85,7 +85,7 @@ function App() {
             name="HomePage"
             options={{
               tabBarIcon: () => (
-                <Icon name="home" type="font-awesome" color="#444" />
+                <Icon name="home" type="font-awesome" color="#a9a9a9" />
               ),
 
               headerShown: false,
@@ -100,7 +100,7 @@ function App() {
             name="ProfilePage"
             options={{
               tabBarIcon: () => (
-                <Icon name="user" type="font-awesome" color="#444" />
+                <Icon name="user" type="font-awesome" color="#a9a9a9" />
               ),
 
               headerShown: false,
