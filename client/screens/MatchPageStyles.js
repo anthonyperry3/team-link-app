@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         fontSize: 35,
-        // fontWeight: 500,
         color: "red" ,
         marginBottom: 10,
         marginTop: 20,
