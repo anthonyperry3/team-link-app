@@ -71,7 +71,7 @@ function App() {
             name="MatchPage"
             options={{
               tabBarIcon: () => (
-                <Ionicons name="md-people" size={24} color="black" />
+                <Icon name="comments" type="font-awesome" size={24} color="#444" />
               ),
 
               headerShown: false,
