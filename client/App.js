@@ -18,7 +18,7 @@ import { TailwindProvider } from "tailwind-rn";
 import utilities from "./tailwind.json";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-
+import { Fontisto } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -71,7 +71,7 @@ function App() {
             name="MatchPage"
             options={{
               tabBarIcon: () => (
-                <Icon name="comments" type="font-awesome" size={24} color="#444" />
+                <Fontisto name="persons" size={24} color="black" />
               ),
 
               headerShown: false,
@@ -114,7 +114,7 @@ function App() {
             name="ChatRoom"
             options={{
               tabBarIcon: () => (
-                <Icon name="user" type="font-awesome" color="#444" />
+                <AntDesign name="message1" size={24} color="black" />
               ),
 
               headerShown: false,

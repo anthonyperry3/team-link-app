@@ -38,7 +38,6 @@ const Home = (props) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-
       onSnapshot(collection(db, "users"), (snapshot) => {
         setUsersList(
           snapshot.docs
