@@ -7,6 +7,8 @@ import {
   Platform,
   TouchableWithoutFeedback,
   FlatList,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ReceiverMessage from "../components/ReceiverMessage";
@@ -23,6 +25,9 @@ import {
 } from "@firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
+import { useTailwind } from "tailwind-rn";
+
+import { Ionicons } from "@expo/vector-icons";
 
 const ChatRoom = ({ route, props }) => {
   const { matchedUserInfo, userId, matchDetails } = route.params;
@@ -31,6 +36,8 @@ const ChatRoom = ({ route, props }) => {
   const [messages, setMessages] = useState([]);
 
   const db = getFirestore(app);
+
+  const tw = useTailwind();
 
   useEffect(() => {
     onSnapshot(
@@ -71,27 +78,44 @@ const ChatRoom = ({ route, props }) => {
   };
 
   return (
-    <View>
-      <Text>{matchedUserInfo?.username}</Text>
+    <SafeAreaView style={tw("bg-white flex-1")}>
+      <View style={tw("flex flex-row items-center")}>
+        <View style={tw("flex flex-row items-center justify-between")}>
+          <TouchableOpacity>
+            <Ionicons name="chevron-back-outline" size={34} color="#FF5864" />
+          </TouchableOpacity>
+          <Text style={tw("text-2xl font-bold pl-2")}>
+            {matchedUserInfo?.username}
+          </Text>
+        </View>
+      </View>
       <KeyboardAvoidingView
+        style={tw("flex-1")}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={10}
       >
         <TouchableWithoutFeedback>
           <FlatList
+            style={tw("pl-4")}
             data={messages}
+            inverted={-1}
             keyExtractor={(item) => item.id}
             renderItem={({ item: message }) =>
-              messages.userId === userId ? (
-                <SenderMessage key={message.id} message={message} />
+              message.userId === userId ? (
+                <SenderMessage key={message.id} message={message} tw={tw} />
               ) : (
-                <ReceiverMessage key={message.id} message={message} />
+                <ReceiverMessage key={message.id} message={message} tw={tw} />
               )
             }
           />
         </TouchableWithoutFeedback>
-        <View>
+        <View
+          style={tw(
+            "flex-row justify-between items-center border-t border-gray-200 px-5 py-2"
+          )}
+        >
           <TextInput
+            style={tw("h-10 text-lg")}
             placeholder="Send Message..."
             onChangeText={setInput}
             onSubmitEditing={sendMessage}
@@ -100,7 +124,7 @@ const ChatRoom = ({ route, props }) => {
           <Button onPress={sendMessage} title="Send" color="#FF5864" />
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 

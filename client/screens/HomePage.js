@@ -104,7 +104,7 @@ const Home = (props) => {
   };
 
   return (
-    <SafeAreaView style={tw("flex-1")}>
+    <SafeAreaView style={tw("flex-1 bg-white")}>
       <View style={tw("flex-row items-center justify-center px-5 mt-5")}>
         <TouchableOpacity>
           <Text>LOGO</Text>

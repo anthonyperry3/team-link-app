@@ -1,4 +1,4 @@
-import { FlatList, Text, View, StyleSheet} from "react-native";
+import { FlatList, Text, View, SafeAreaView } from "react-native";
 import styles from "./MatchPageStyles";
 import { useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
@@ -31,16 +31,16 @@ const MatchPage = (props) => {
   }, [props.userId]);
 
   return matches.length > 0 ? (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Matches</Text>
       <FlatList
         data={matches.reverse()}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MessageRow matchDetails={item} userId={props.userId} props={props} />
-          )}
+        )}
       />
-    </View>
+    </SafeAreaView>
   ) : (
     <View style={styles.container}>
       <Text>No matches at the moment.. Keep searching!</Text>
