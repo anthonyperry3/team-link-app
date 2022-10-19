@@ -24,8 +24,6 @@ const MessageRow = ({ matchDetails, userId, props }) => {
     setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, userId));
   }, [matchDetails, userId]);
 
-  console.log(matchDetails, userId);
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
