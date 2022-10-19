@@ -12,6 +12,8 @@ import styles from "./ProfilePageStyles";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
 import { doc, setDoc, onSnapshot, collection } from "@firebase/firestore";
+import { Entypo } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import {
   getStorage,
@@ -127,12 +129,14 @@ const ProfilePage = (props) => {
     const fetchUserInfo = () => {
       onSnapshot(doc(db, `users/${props.userId}`), (snapshot) => {
         setData(snapshot.data());
+        setBio(snapshot.data().bio);
+        setUsername(snapshot.data().username);
+        setLocation(snapshot.data().location);
       });
     };
 
     fetchUserInfo();
   }, []);
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.boxOne}>
@@ -148,22 +152,38 @@ const ProfilePage = (props) => {
                 justifyContent: "center",
               }}
             >
-              <Button
-                title="Pick an image from camera roll"
-                onPress={pickImage}
-              />
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "rgba(88, 124, 244, 0.5)",
+                  position: "absolute",
+                  right: 20 + "%",
+                  zIndex: 5,
+                  borderWidth: 2,
+                  padding: 5,
+                  borderRadius: 25,
+                  borderColor: "rgba(88, 124, 244,0.75)",
+                  bottom: 0,
+                }}
+              >
+                <Entypo
+                  name="camera"
+                  size={30}
+                  color="rgba(88, 124, 244, 0.75)"
+                />
+              </TouchableOpacity>
               {image && (
                 <Image
                   source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
+                  style={{ width: 200, height: 200, borderRadius: 100 }}
                 />
               )}
             </View>
-
-            <Text style={styles.topUserInfoName}>{data.username}</Text>
-            <Text style={styles.topUserInfoLocation}>
-              {data.location ? data.location : null}
-            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text style={styles.topUserInfoName}>{data.username}</Text>
+              <Text style={styles.topUserInfoLocation}>
+                {data.location ? data.location : null}
+              </Text>
+            </View>
           </View>
         ) : (
           <View style={styles.topUserInfo}>
@@ -181,21 +201,37 @@ const ProfilePage = (props) => {
               {image && (
                 <Image
                   source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
+                  style={{ width: 200, height: 200, borderRadius: 100 }}
                 />
               )}
             </View>
-
-            <Text style={styles.topUserInfoName}>Angel</Text>
-            <Text style={styles.topUserInfoLocation}>
-              {location ? location : null}
-            </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.topUserInfoName}>Angel</Text>
+              <Text style={styles.topUserInfoLocation}>
+                {location ? location : null}
+              </Text>
+            </View>
           </View>
         )}
       </View>
       <View style={styles.boxTwo}>
-        <Text style={styles.aboutTitle}>About</Text>
-
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.aboutTitle}>About</Text>
+          <View style={{ marginLeft: 5, marginTop: 4 }}>
+            <TouchableOpacity onPress={updateUserProfile}>
+              <MaterialCommunityIcons
+                name="account-edit-outline"
+                size={23}
+                color="green"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Username</Text>
           <TextInput
@@ -214,22 +250,19 @@ const ProfilePage = (props) => {
         </View>
         <View style={styles.inputContainers}>
           <Text style={styles.inputTitles}>Location</Text>
-          <TextInput
-            value={location}
-            onChangeText={setLocation}
-            style={styles.inputInfo}
-          />
+          <TouchableOpacity>
+            <TextInput
+              value={location}
+              onChangeText={setLocation}
+              style={styles.inputInfo}
+            />
+          </TouchableOpacity>
         </View>
       </View>
-      <View>
-        <TouchableOpacity onPress={updateUserProfile}>
-          <Text>Update Profile</Text>
-        </TouchableOpacity>
-      </View>
 
-      <View>
+      <View style={{ marginTop: 50, alignItems: "center" }}>
         <TouchableOpacity onPress={signOut}>
-          <Text>Sign Out</Text>
+          <Text style={{ color: "red" }}>— Sign Out —</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

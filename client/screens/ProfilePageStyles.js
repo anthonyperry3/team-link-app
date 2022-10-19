@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   topUserInfoLocation: {
     marginTop: 10,
+    color: "#898989",
     fontSize: 16,
   },
   aboutTitle: {
@@ -41,17 +42,17 @@ const styles = StyleSheet.create({
   inputTitles: {
     fontSize: 14,
     color: "#898989",
-    marginBottom: 10,
+    marginBottom: 2,
   },
   inputInfo: {
     fontSize: 14,
-    marginBottom: 15,
+    marginBottom: 5,
   },
   inputContainers: {
     borderBottomWidth: 1,
     borderColor: "#E0DCDC",
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: 0,
+    marginBottom: 0,
   },
   boxOne: {
     // borderColor: "#000",
