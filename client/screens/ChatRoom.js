@@ -29,8 +29,8 @@ import { useTailwind } from "tailwind-rn";
 
 import { Ionicons } from "@expo/vector-icons";
 
-const ChatRoom = ({ route, props }) => {
-  const { matchedUserInfo, userId, matchDetails } = route.params;
+const ChatRoom = ({ route }) => {
+  const { matchedUserInfo, userId, matchDetails, props } = route.params;
   const [userData, setUserData] = useState();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -77,7 +77,9 @@ const ChatRoom = ({ route, props }) => {
     setInput("");
   };
 
-  return (
+  useEffect(() => {}, [matchedUserInfo]);
+
+  return matchedUserInfo ? (
     <SafeAreaView style={tw("bg-white flex-1")}>
       <View style={tw("flex flex-row items-center")}>
         <View style={tw("flex flex-row items-center justify-between")}>
@@ -125,6 +127,10 @@ const ChatRoom = ({ route, props }) => {
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  ) : (
+    <View>
+      <Text>Go to chatroom to pick a room</Text>
+    </View>
   );
 };
 

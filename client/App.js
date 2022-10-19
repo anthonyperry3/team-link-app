@@ -37,36 +37,10 @@ function App() {
     });
   }, []);
 
-  return (
+  return userId !== "" ? (
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="MatchPage" style={styles.container}>
-          <Tab.Screen
-            name="LandingPage"
-            options={{
-              tabBarIcon: () => (
-                <AntDesign name="layout" size={24} color="black" />
-              ),
-              tabBarStyle: { display: "none" },
-              headerShown: false,
-            }}
-            component={LandingPage}
-          />
-          <Tab.Screen
-            name="LoginPage"
-            options={{
-              tabBarIcon: () => (
-                <AntDesign name="login" size={24} color="black" />
-              ),
-
-              tabBarStyle: { display: "none" },
-              headerShown: false,
-            }}
-          >
-            {(props) => (
-              <LoginPage {...props} userAuth={userAuth} userId={userId} />
-            )}
-          </Tab.Screen>
           <Tab.Screen
             name="MatchPage"
             options={{
@@ -122,6 +96,39 @@ function App() {
           >
             {(props) => (
               <ChatRoom {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+        </Tab.Navigator>
+      </NavigationContainer>
+    </TailwindProvider>
+  ) : (
+    <TailwindProvider utilities={utilities}>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="MatchPage" style={styles.container}>
+          <Tab.Screen
+            name="LandingPage"
+            options={{
+              tabBarIcon: () => (
+                <AntDesign name="layout" size={24} color="black" />
+              ),
+              tabBarStyle: { display: "none" },
+              headerShown: false,
+            }}
+            component={LandingPage}
+          />
+          <Tab.Screen
+            name="LoginPage"
+            options={{
+              tabBarIcon: () => (
+                <AntDesign name="login" size={24} color="black" />
+              ),
+
+              tabBarStyle: { display: "none" },
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <LoginPage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
         </Tab.Navigator>
