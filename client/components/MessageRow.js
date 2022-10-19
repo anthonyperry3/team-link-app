@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 
 const MessageRow = ({ matchDetails, userId, props }) => {
@@ -19,12 +26,21 @@ const MessageRow = ({ matchDetails, userId, props }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => props.navigation.navigate("ChatRoom")}>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate("ChatRoom", {
+            matchedUserInfo,
+            userId,
+            props,
+            matchDetails,
+          })
+        }
+      >
         <View style={styles.child}>
           <Image
             style={styles.matchedUserImage}
             source={{ uri: matchedUserInfo?.image }}
-            />
+          />
           <Text style={styles.username}>{matchedUserInfo?.username}</Text>
         </View>
       </TouchableOpacity>
@@ -36,12 +52,12 @@ export default MessageRow;
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
+    display: "flex",
   },
   child: {
-    flexDirection: 'row',
-    justifyContent:'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     borderBottomColor: "#444",
     height: 100,
     marginLeft: 12,
