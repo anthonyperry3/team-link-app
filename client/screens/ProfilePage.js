@@ -25,7 +25,7 @@ import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
 const ProfilePage = (props) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
@@ -126,10 +126,18 @@ const ProfilePage = (props) => {
   useEffect(() => {
     const fetchUserInfo = () => {
       onSnapshot(doc(db, `users/${props.userId}`), (snapshot) => {
-        setData(snapshot.data());
-        setBio(snapshot.data().bio);
-        setUsername(snapshot.data().username);
-        setLocation(snapshot.data().location);
+        const response = snapshot.data();
+        if (response) {
+          setData(response);
+          setBio(response.bio);
+          setUsername(response.username);
+          setLocation(response.location);
+        } else {
+          setData("");
+          setBio("");
+          setUsername("");
+          setLocation("");
+        }
       });
     };
 
@@ -150,23 +158,26 @@ const ProfilePage = (props) => {
                 justifyContent: "center",
               }}
             >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "rgba(88, 124, 244, 0.5)",
-                  position: "absolute",
-                  right: 20 + "%",
-                  zIndex: 5,
-                  padding: 5,
-                  borderRadius: 25,
-                  bottom: 0,
-                }}
-              >
-                <Entypo
-                  name="camera"
-                  size={30}
-                  color="rgba(88, 124, 244, 0.75)"
-                />
-              </TouchableOpacity>
+              {image ? (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "rgba(88, 124, 244, 0.75)",
+                    position: "absolute",
+                    right: 20 + "%",
+                    zIndex: 5,
+                    padding: 5,
+                    borderRadius: 40,
+                    bottom: 0,
+                  }}
+                  onPress={() => pickImage()}
+                >
+                  <Entypo name="camera" size={35} color="blue" />
+                </TouchableOpacity>
+              ) : (
+                <View style={{ marginTop: 20 }}>
+                  <Button title="Choose your Avatar" onPress={pickImage} />
+                </View>
+              )}
               {image && (
                 <Image
                   source={{ uri: image }}
@@ -190,7 +201,11 @@ const ProfilePage = (props) => {
                 justifyContent: "center",
               }}
             >
-              <Button title="Choose your Avatar" onPress={pickImage} />
+              {image ? null : (
+                <View style={{ marginTop: 20 }}>
+                  <Button title="Choose your Avatar" onPress={pickImage} />
+                </View>
+              )}
               {image && (
                 <Image
                   source={{ uri: image }}
@@ -204,7 +219,9 @@ const ProfilePage = (props) => {
                 alignItems: "center",
               }}
             >
-              <Text style={styles.topUserInfoName}>Angel</Text>
+              <Text style={styles.topUserInfoName}>
+                {username ? username : null}
+              </Text>
               <Text style={styles.topUserInfoLocation}>
                 {location ? location : null}
               </Text>
