@@ -311,6 +311,12 @@
 			"paddingRight": 16
 		}
 	},
+	"py-6": {
+		"style": {
+			"paddingTop": 24,
+			"paddingBottom": 24
+		}
+	},
 	"pl-2": {
 		"style": {
 			"paddingLeft": 8

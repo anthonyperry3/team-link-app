@@ -122,7 +122,9 @@ const ProfilePage = (props) => {
     setBio("");
     setLocation("");
     setUsername("");
+
     props.userAuth.signOut();
+    // props.navigation.navigate("LoginPage");
   };
 
   useEffect(() => {
@@ -273,7 +275,7 @@ const ProfilePage = (props) => {
       </View>
 
       <View style={{ marginTop: 50, alignItems: "center" }}>
-        <TouchableOpacity onPress={signOut}>
+        <TouchableOpacity onPress={() => signOut()}>
           <Text style={{ color: "red" }}>— Sign Out —</Text>
         </TouchableOpacity>
       </View>
