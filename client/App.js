@@ -40,21 +40,7 @@ function App() {
   return userId !== "" ? (
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="MatchPage" style={styles.container}>
-          <Tab.Screen
-            name="MatchPage"
-            options={{
-              tabBarIcon: () => (
-                <Fontisto name="persons" size={24} color="black" />
-              ),
-
-              headerShown: false,
-            }}
-          >
-            {(props) => (
-              <MatchPage {...props} userAuth={userAuth} userId={userId} />
-            )}
-          </Tab.Screen>
+        <Tab.Navigator initialRouteName="HomePage" style={styles.container}>
           <Tab.Screen
             name="HomePage"
             options={{
@@ -67,6 +53,20 @@ function App() {
           >
             {(props) => (
               <HomePage {...props} userAuth={userAuth} userId={userId} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="MatchPage"
+            options={{
+              tabBarIcon: () => (
+                <Fontisto name="persons" size={24} color="#444" />
+              ),
+
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <MatchPage {...props} userAuth={userAuth} userId={userId} />
             )}
           </Tab.Screen>
 
@@ -87,10 +87,8 @@ function App() {
           <Tab.Screen
             name="ChatRoom"
             options={{
-              tabBarIcon: () => (
-                <AntDesign name="message1" size={24} color="black" />
-              ),
-
+              tabBarButton: () => null,
+              tabBarVisible: false,
               headerShown: false,
             }}
           >
@@ -104,7 +102,7 @@ function App() {
   ) : (
     <TailwindProvider utilities={utilities}>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="MatchPage" style={styles.container}>
+        <Tab.Navigator initialRouteName="LandingPage" style={styles.container}>
           <Tab.Screen
             name="LandingPage"
             options={{
