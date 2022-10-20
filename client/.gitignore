@@ -1,5 +1,5 @@
 node_modules/
-Firebase/
+.private.js
 .expo/
 dist/
 npm-debug.*

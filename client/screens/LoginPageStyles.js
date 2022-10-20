@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    margin: 30,
+    padding: 30,
+    backgroundColor: "#fff",
   },
   registerHeader: {
     fontSize: 32,
