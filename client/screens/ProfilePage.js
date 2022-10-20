@@ -83,7 +83,6 @@ const ProfilePage = (props) => {
       xhr.send(null);
     });
 
-    // const fileRef = sRef(getStorage(), uuid.v4());
     const userImageRef = sRef(storage, `users/${props.userId}`, uuid.v4());
     const result = await uploadBytes(userImageRef, blob);
 
@@ -109,7 +108,6 @@ const ProfilePage = (props) => {
         const reference = sRef(storage, `users/${props.userId}`);
         await getDownloadURL(reference).then((url) => {
           setImage(url);
-          // editProfileImage(url);
         });
       };
 
@@ -158,10 +156,8 @@ const ProfilePage = (props) => {
                   position: "absolute",
                   right: 20 + "%",
                   zIndex: 5,
-                  borderWidth: 2,
                   padding: 5,
                   borderRadius: 25,
-                  borderColor: "rgba(88, 124, 244,0.75)",
                   bottom: 0,
                 }}
               >
@@ -194,10 +190,7 @@ const ProfilePage = (props) => {
                 justifyContent: "center",
               }}
             >
-              <Button
-                title="Pick an image from camera roll"
-                onPress={pickImage}
-              />
+              <Button title="Choose your Avatar" onPress={pickImage} />
               {image && (
                 <Image
                   source={{ uri: image }}
