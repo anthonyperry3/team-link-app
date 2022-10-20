@@ -35,7 +35,7 @@ function App() {
         setUserId("");
       }
     });
-  }, []);
+  }, [userId]);
 
   return userId !== "" ? (
     <TailwindProvider utilities={utilities}>

@@ -19,7 +19,7 @@ import app from "../Firebase/firebase";
 
 const MessageRow = ({ matchDetails, userId, props }) => {
   const [matchedUserInfo, setMatchedUserInfo] = useState(null);
-
+  const [lastMessage, setLastMessage] = useState();
 
   const tw = useTailwind();
   const db = getFirestore(app);
@@ -37,7 +37,15 @@ const MessageRow = ({ matchDetails, userId, props }) => {
     setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, userId));
   }, [matchDetails, userId]);
 
- 
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "matches", matchDetails.id, "messages"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => setLastMessage(snapshot.docs[0]?.data()?.message)
+    );
+  }, [matchDetails, db]);
 
   return (
     <TouchableOpacity
@@ -62,7 +70,7 @@ const MessageRow = ({ matchDetails, userId, props }) => {
         <Text style={tw("text-lg font-semibold")}>
           {matchedUserInfo?.username}
         </Text>
-        <Text>Say Hi!</Text>
+        <Text>{lastMessage || "Say Hi!"}</Text>
       </View>
     </TouchableOpacity>
   );
