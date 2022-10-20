@@ -3,10 +3,8 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // margin: 30,
     padding: 30,
-    // backgroundColor: "#fff",
-    // justifyContent: "space-between",
+ 
   },
   pageTitle: {
     fontSize: 36,
