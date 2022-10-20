@@ -23,6 +23,7 @@ import {
 } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 const Home = (props) => {
   const [usersList, setUsersList] = useState([]);
@@ -107,7 +108,7 @@ const Home = (props) => {
     <SafeAreaView style={tw("flex-1 bg-white")}>
       <View style={tw("flex-row items-center justify-center px-5 mt-5")}>
         <TouchableOpacity>
-          <Text>LOGO</Text>
+          <Ionicons name="logo-electron" size={55} color="#ff0000" />
         </TouchableOpacity>
       </View>
 
