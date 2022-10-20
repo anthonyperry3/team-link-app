@@ -8,11 +8,13 @@ import { getFirestore } from "firebase/firestore";
 import app from "../Firebase/firebase";
 import { ListItem } from "react-native-elements";
 import MessageRow from "../components/MessageRow";
+import { useTailwind } from "tailwind-rn";
 
 const MatchPage = (props) => {
   const [matches, setMatches] = useState([]);
 
   const db = getFirestore(app);
+  const tw = useTailwind();
 
   useEffect(() => {
     onSnapshot(
@@ -31,9 +33,10 @@ const MatchPage = (props) => {
   }, [props.userId]);
 
   return matches.length > 0 ? (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Matches</Text>
+    <SafeAreaView style={tw("px-4 bg-slate-50 h-full w-full")}>
+      <Text style={tw("text-2xl font-bold pl-2 my-4")}>Matches</Text>
       <FlatList
+        style={tw("h-full")}
         data={matches.reverse()}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (

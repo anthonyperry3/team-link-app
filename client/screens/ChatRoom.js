@@ -66,18 +66,20 @@ const ChatRoom = ({ route }) => {
   }, []);
 
   const sendMessage = () => {
-    addDoc(collection(db, "matches", matchDetails.id, "messages"), {
-      timestamp: serverTimestamp(),
-      userId: userId,
-      username: userData.username,
-      imageURL: matchedUserInfo.image,
-      message: input,
-    });
+    if (input !== "") {
+      addDoc(collection(db, "matches", matchDetails.id, "messages"), {
+        timestamp: serverTimestamp(),
+        userId: userId,
+        username: userData.username,
+        imageURL: userData.image,
+        message: input,
+      });
+    } else {
+      return;
+    }
 
     setInput("");
   };
-
-  useEffect(() => {}, [matchedUserInfo]);
 
   return matchedUserInfo ? (
     <SafeAreaView style={tw("bg-white flex-1")}>

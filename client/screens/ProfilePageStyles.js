@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // margin: 30,
     padding: 30,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     // justifyContent: "space-between",
   },
   pageTitle: {

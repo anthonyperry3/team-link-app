@@ -23,6 +23,7 @@ import {
 } from "firebase/storage";
 import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
+import { useTailwind } from "tailwind-rn";
 
 const ProfilePage = (props) => {
   const [data, setData] = useState();
@@ -34,6 +35,7 @@ const ProfilePage = (props) => {
 
   const storage = getStorage();
   const db = getFirestore(app);
+  const tw = useTailwind();
 
   // Image Picker
   const pickImage = async () => {
@@ -136,10 +138,10 @@ const ProfilePage = (props) => {
     fetchUserInfo();
   }, []);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[tw("bg-slate-50"), styles.container]}>
       <View style={styles.boxOne}>
         <View>
-          <Text style={styles.pageTitle}>Profile</Text>
+          <Text style={tw("text-2xl font-bold pl-2")}>Profile</Text>
         </View>
         {data ? (
           <View style={styles.topUserInfo}>
