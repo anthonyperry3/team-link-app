@@ -88,7 +88,7 @@ const ChatRoom = ({ route }) => {
           <TouchableOpacity>
             <Ionicons name="chevron-back-outline" size={34} color="#FF5864" />
           </TouchableOpacity>
-          <Text style={tw("text-2xl font-bold pl-2 py-6")}>
+          <Text style={tw("text-2xl font-bold pl-2 py-5")}>
             {matchedUserInfo?.username}
           </Text>
         </View>
