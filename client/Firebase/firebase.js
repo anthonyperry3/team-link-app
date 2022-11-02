@@ -13,7 +13,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
+
 const storage = getStorage();
 const db = getFirestore(app);
 
